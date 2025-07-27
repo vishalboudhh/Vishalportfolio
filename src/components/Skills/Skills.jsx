@@ -25,6 +25,7 @@ import {
 } from 'react-icons/si';
 import { MdApi } from 'react-icons/md';
 import { VscVscode } from 'react-icons/vsc';
+import { MdElectricBolt } from "react-icons/md";
 
 const Skills = () => {
   const skills = [
@@ -69,7 +70,7 @@ const Skills = () => {
         { name: 'GitHub', icon: FaGithub, className: 'text-gray-300' },
         { name: 'VS Code', icon: VscVscode, className: 'text-blue-400' },
         { name: 'Postman', icon: SiPostman, className: 'text-orange-500' },
-        { name: 'Thunder Client', icon: SiPostman, className: 'text-orange-500' },
+        { name: 'Thunder Client', icon: MdElectricBolt, className: 'text-orange-500' },
         { name: 'Firebase', icon: SiFirebase, className: 'text-yellow-400' },
       ],
     },

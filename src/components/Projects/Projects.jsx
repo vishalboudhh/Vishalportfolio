@@ -9,7 +9,7 @@ const projects = [
     title: 'Chat Application',
     link: 'https://fullstackchatapp-s8ce.onrender.com/login',
     icon: <IoChatbubblesSharp className="text-emerald-400" size={28} />,
-    image: 'https://www.flaticon.com/free-icon/smartphone_186239?term=phone&page=1&position=67&origin=tag&related_id=186239',
+    image: 'https://cdn-icons-png.flaticon.com/512/186/186239.png', // ✅ Direct PNG image link
     description:
       'Real-time MERN chat app with Socket.IO, JWT auth, and responsive UI using React + Tailwind.',
   },

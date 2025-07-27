@@ -22,14 +22,6 @@ const projects = [
       'React + Firebase clone of Gmail with Google Auth and real-time Firestore syncing.',
   },
   {
-    title: 'Employee Management System',
-    link: 'https://ems-five-lemon.vercel.app/',
-    icon: <FaTasks className="text-yellow-400" size={28} />,
-    image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-    description:
-      'React-based system with local storage and dual dashboards for admin and employees.',
-  },
-  {
     title: 'Doctor Management System',
     link: 'https://doctorappointmentsystem-lq6g.onrender.com/login',
     icon: <FaUserMd className="text-blue-400" size={28} />,
@@ -38,6 +30,15 @@ const projects = [
       'MERN-based system with role-based access, doctor approvals, and appointment booking.',
   },
   {
+    title: 'Employee Management System',
+    link: 'https://ems-five-lemon.vercel.app/',
+    icon: <FaTasks className="text-yellow-400" size={28} />,
+    image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+    description:
+      'React-based system with local storage and dual dashboards for admin and employees.',
+  },
+
+  {
     title: 'Book Management System',
     link: 'https://github.com/vishalboudhh/bookManagementsystem',
     icon: <MdLibraryBooks className="text-purple-400" size={28} />,
@@ -45,7 +46,7 @@ const projects = [
     description:
       'Full-stack CRUD book system with secure access and responsive design using Vite.',
   },
-  
+
   {
     title: 'Todo List',
     link: 'https://vishalmeshram-todolist.netlify.app/',

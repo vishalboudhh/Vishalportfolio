@@ -14,6 +14,14 @@ const projects = [
       'Real-time MERN chat app with Socket.IO, JWT auth, and responsive UI using React + Tailwind.',
   },
   {
+    title: 'Gmail Clone',
+    link: 'https://clone-3eeab.web.app/',
+    icon: <MdOutlineEmail className="text-red-400" size={28} />,
+    image: 'https://cdn-icons-png.flaticon.com/512/281/281769.png',
+    description:
+      'React + Firebase clone of Gmail with Google Auth and real-time Firestore syncing.',
+  },
+  {
     title: 'Employee Management System',
     link: 'https://ems-five-lemon.vercel.app/',
     icon: <FaTasks className="text-yellow-400" size={28} />,
@@ -37,14 +45,7 @@ const projects = [
     description:
       'Full-stack CRUD book system with secure access and responsive design using Vite.',
   },
-  {
-    title: 'Gmail Clone',
-    link: 'https://clone-3eeab.web.app/',
-    icon: <MdOutlineEmail className="text-red-400" size={28} />,
-    image: 'https://cdn-icons-png.flaticon.com/512/281/281769.png',
-    description:
-      'React + Firebase clone of Gmail with Google Auth and real-time Firestore syncing.',
-  },
+  
   {
     title: 'Todo List',
     link: 'https://vishalmeshram-todolist.netlify.app/',

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
   const handleDownloadCV = () => {
     window.open(
-      "https://drive.google.com/file/d/1QceZ9JvawQvW4zPt3zyp2pId3xQ_zCxp/view?usp=sharing",
+      "https://drive.google.com/file/d/1-A07Q1rygwLl9rUlsa6huQw4cC8fahLs/view?usp=sharing",
       "_blank"
     );
   };

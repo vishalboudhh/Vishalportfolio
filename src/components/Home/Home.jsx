@@ -72,13 +72,13 @@ const Home = () => {
         {/* Buttons */}
         <div className='flex flex-col sm:flex-row gap-4 mt-8'>
           <Link to='/contect'>
-            <button className='bg-gradient-to-r from-green-500 to-gray-900 text-white font-semibold rounded-3xl py-2 px-6 hover:opacity-90 hover:scale-105 transition'>
+            <button className='cursor-pointer bg-gradient-to-r from-green-500 to-gray-900 text-white font-semibold rounded-3xl py-2 px-6 hover:opacity-90 hover:scale-105 transition'>
               Hire Me
             </button>
           </Link>
           <button
             onClick={handleDownloadCV}
-            className='bg-gradient-to-r from-blue-400 to-gray-900 text-white font-semibold rounded-3xl py-2 px-6 hover:opacity-90 hover:scale-105 transition'
+            className='cursor-pointer bg-gradient-to-r from-blue-400 to-gray-900 text-white font-semibold rounded-3xl py-2 px-6 hover:opacity-90 hover:scale-105 transition'
           >
             Download CV
           </button>

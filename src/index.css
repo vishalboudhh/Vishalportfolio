@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
-body{
-    background-color: black;
+/* This completely hides the scrollbar (use with caution) */
+::-webkit-scrollbar {
+  display: none;
+}
+body {
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+  background-color: black;
 }

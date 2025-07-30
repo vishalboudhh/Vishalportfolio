@@ -26,6 +26,7 @@ import {
 import { MdApi } from 'react-icons/md';
 import { VscVscode } from 'react-icons/vsc';
 import { MdElectricBolt } from "react-icons/md";
+import { SiShadcnui } from "react-icons/si";
 
 const Skills = () => {
   const skills = [
@@ -45,6 +46,7 @@ const Skills = () => {
         { name: 'HTML5', icon: FaHtml5, className: 'text-orange-500' },
         { name: 'CSS3', icon: FaCss3Alt, className: 'text-blue-500' },
         { name: 'Tailwind CSS', icon: SiTailwindcss, className: 'text-teal-400' },
+        { name: 'Shadcn', icon: SiShadcnui, className: 'text-white' },
       ],
     },
     {

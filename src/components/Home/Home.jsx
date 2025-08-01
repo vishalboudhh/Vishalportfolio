@@ -31,7 +31,7 @@ const Home = () => {
                 href='https://www.linkedin.com/in/vishal-meshram-67a99b227/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='hover:text-blue-400 transition'
+                className='text-blue-400 hover:text-blue-400 transition'
               >
                 <FaLinkedinIn />
               </a>
@@ -41,7 +41,7 @@ const Home = () => {
                 href='https://github.com/vishalboudhh'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='hover:text-gray-300 transition'
+                className='text-gray-100 hover:text-gray-300 transition'
               >
                 <FiGithub />
               </a>
@@ -51,7 +51,7 @@ const Home = () => {
                 href='https://leetcode.com/vishalmeshram298/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='hover:text-orange-400 transition'
+                className='text-orange-400 hover:text-orange-400 transition'
               >
                 <SiLeetcode />
               </a>
@@ -61,7 +61,7 @@ const Home = () => {
                 href='https://www.geeksforgeeks.org/user/vishalmesj08n/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='hover:text-green-400 transition'
+                className='text-green-400 hover:text-green-400 transition'
               >
                 <SiGeeksforgeeks className="text-3xl" />
               </a>

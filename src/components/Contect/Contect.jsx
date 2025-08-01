@@ -13,7 +13,7 @@ const Contact = () => {
     },
     {
       type: 'Phone',
-      value: '9981434150',
+      value: '+91 9981434150',
       icon: <MdPhone size={24} className="text-green-400" />,
       link: 'tel:+91 9981434150',
     },

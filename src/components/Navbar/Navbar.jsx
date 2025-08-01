@@ -26,7 +26,7 @@ const Navbar = () => {
     <nav className="w-full bg-black text-white px-6 md:px-20 py-4 shadow-md relative z-50">
       <div className="flex justify-between items-center">
         <Link to="/" className="text-2xl md:text-3xl font-bold tracking-wide">
-          Vishal Meshram
+          <span className="bg-gradient-to-r from-blue-700 to-sky-400 bg-clip-text text-transparent">Vishal Meshram</span> 
         </Link>
 
         {/* Desktop Menu */}

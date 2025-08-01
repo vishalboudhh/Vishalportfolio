@@ -12,26 +12,26 @@ const Home = () => {
   };
 
   return (
-    <div className='bg-black h-[595px] overflow-hidden text-white flex flex-col-reverse md:flex-row justify-between items-center px-6 md:px-20 py-6 md:py-0 gap-6'>
+    <div className='bg-black h-[595px] overflow-hidden text-white flex flex-col-reverse md:flex-row justify-between items-center px-6 md:px-20 py-22 md:py-0 gap-6'>
       
       {/* Text Section */}
-      <div className='w-full md:w-1/2'>
+      <div className='w-full md:w-1/2 text-center '>
         <h1 className='text-3xl md:text-6xl font-bold leading-tight'>
-          Hello, I'm Vishal
+          <span className="bg-gradient-to-r from-blue-600 to-red-600 bg-clip-text text-transparent">Hello, I'm Vishal</span> 
         </h1>
-        <p className='text-lg md:text-xl mt-4'>
-          I am a Full Stack Developer and Software Developer
+        <p className='text-3xl font-bold md:text-xl mt-4'>
+           <span className="bg-gradient-to-r from-blue-400 to-emerald-600 bg-clip-text text-transparent">I am a Software Developer </span> 
         </p>
 
         {/* Social Icons */}
-        <div className='flex mt-6'>
+        <div className='flex mt-6 justify-center'>
           <ul className='flex gap-4 text-2xl'>
             <li>
               <a
                 href='https://www.linkedin.com/in/vishal-meshram-67a99b227/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='text-blue-400 hover:text-blue-400 transition'
+                className='text-blue-400 hover:text-blue-600 transition'
               >
                 <FaLinkedinIn />
               </a>
@@ -51,7 +51,7 @@ const Home = () => {
                 href='https://leetcode.com/vishalmeshram298/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='text-orange-400 hover:text-orange-400 transition'
+                className='text-orange-400 hover:text-orange-600 transition'
               >
                 <SiLeetcode />
               </a>
@@ -61,7 +61,7 @@ const Home = () => {
                 href='https://www.geeksforgeeks.org/user/vishalmesj08n/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='text-green-400 hover:text-green-400 transition'
+                className='text-green-400 hover:text-green-600 transition'
               >
                 <SiGeeksforgeeks className="text-3xl" />
               </a>
@@ -70,7 +70,7 @@ const Home = () => {
         </div>
 
         {/* Buttons */}
-        <div className='flex flex-row sm:flex-row gap-4 mt-8'>
+        <div className='flex flex-row sm:flex-row gap-4 mt-8 justify-center'>
           <Link to='/contect'>
             <button className='cursor-pointer bg-gradient-to-r from-green-500 to-gray-900 text-white font-semibold rounded-3xl py-2 px-6 hover:opacity-90 hover:scale-105 transition'>
               Hire Me

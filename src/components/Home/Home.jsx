@@ -19,7 +19,7 @@ const Home = () => {
         <h1 className='text-3xl md:text-6xl font-bold leading-tight'>
           <span className="bg-gradient-to-r from-blue-600 to-red-600 bg-clip-text text-transparent">Hello, I'm Vishal</span> 
         </h1>
-        <p className='text-3xl font-bold md:text-xl mt-4'>
+        <p className='text-sm font-bold md:text-xl mt-4'>
            <span className="bg-gradient-to-r from-blue-400 to-emerald-600 bg-clip-text text-transparent">I am a Software Developer </span> 
         </p>
 

@@ -19,7 +19,7 @@ const About = () => {
 
         <p className='text-md md:text-xl leading-relaxed text-justify mt-4'>
           In addition, I'm an active problem solver with over
-          <span className='font-semibold text-orange-400'> 200+ questions solved</span> on
+          <span className='font-semibold text-orange-400'> 300+ questions solved</span> on
           <span className='text-orange-300 font-medium'> LeetCode</span> and
           <span className='text-green-300 font-medium'> GeeksforGeeks</span>, demonstrating my grasp of data structures and algorithms.
         </p>

@@ -1,8 +1,9 @@
 import { FaLinkedinIn } from "react-icons/fa";
 import { FiGithub } from "react-icons/fi";
 import { SiLeetcode, SiGeeksforgeeks } from "react-icons/si";
+import { FaXTwitter } from "react-icons/fa6"; // Import X (Twitter) icon
 import { Link } from "react-router-dom";
-
+import profileImg from "../../assets/profile.jpg";
 const Home = () => {
   const handleDownloadCV = () => {
     window.open(
@@ -66,6 +67,16 @@ const Home = () => {
                 <SiGeeksforgeeks className="text-3xl" />
               </a>
             </li>
+            <li>
+              <a
+                href='https://x.com/Vishalboudhh'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-white hover:text-gray-400 transition'
+              >
+                <FaXTwitter />
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -89,7 +100,7 @@ const Home = () => {
       <div className='w-40 sm:w-56 md:w-72 lg:w-80 xl:w-96'>
         <img
           className='w-full rounded-3xl object-cover duration-300 hover:scale-105'
-          src='https://media.licdn.com/dms/image/v2/D4D03AQGRKx624qt0nA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1693910085890?e=1756339200&v=beta&t=4BFTKzb3ewfJXsB6hqyHrKUNEgkO_2Ckj0vPdpyiMu4'
+          src={profileImg}
           alt='Vishal Meshram profile'
         />
       </div>

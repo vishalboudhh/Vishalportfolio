@@ -67,29 +67,29 @@ const Skills = () => {
         { name: 'REST API', icon: MdApi, className: 'text-red-400' },
       ],
     },
-    {
-      title: 'Fullstack Frameworks',
-      items: [
-        { name: 'Next.js', icon: SiNextdotjs, className: 'text-white' },
-      ],
-    },
+    // {
+    //   title: 'Fullstack Frameworks',
+    //   items: [
+    //     { name: 'Next.js', icon: SiNextdotjs, className: 'text-white' },
+    //   ],
+    // },
     {
       title: 'Database',
       items: [
-        { name: 'MongoDB', icon: SiMongodb, className: 'text-green-400' },
-        { name: 'MySQL', icon: SiMysql, className: 'text-blue-300' },
-        { name: 'Prisma', icon: SiPrisma, className: 'text-indigo-400' },
+        { name: 'MongoDB ORM', icon: SiMongodb, className: 'text-green-400' },
+        { name: 'MySQL Workbanch', icon: SiMysql, className: 'text-blue-300' },
+        { name: 'Prisma ORM', icon: SiPrisma, className: 'text-indigo-400' },
       ],
     },
-    {
-      title: 'DevOps',
-      items: [
-        { name: 'Docker', icon: SiDocker, className: 'text-blue-400' },
-        { name: 'Kubernetes', icon: SiKubernetes, className: 'text-blue-500' },
-        { name: 'GitHub Actions', icon: SiGithubactions, className: 'text-gray-200' },
-        { name: 'AWS', icon: FaAws, className: 'text-orange-400' },
-      ],
-    },
+    // {
+    //   title: 'DevOps',
+    //   items: [
+    //     { name: 'Docker', icon: SiDocker, className: 'text-blue-400' },
+    //     { name: 'Kubernetes', icon: SiKubernetes, className: 'text-blue-500' },
+    //     { name: 'GitHub Actions', icon: SiGithubactions, className: 'text-gray-200' },
+    //     { name: 'AWS', icon: FaAws, className: 'text-orange-400' },
+    //   ],
+    // },
 
     {
       title: 'Tools',
@@ -97,8 +97,8 @@ const Skills = () => {
         { name: 'Git', icon: FaGitAlt, className: 'text-orange-400' },
         { name: 'GitHub', icon: FaGithub, className: 'text-gray-300' },
         { name: 'VS Code', icon: VscVscode, className: 'text-blue-400' },
-        { name: 'Postman', icon: SiPostman, className: 'text-orange-500' },
-        { name: 'Thunder Client', icon: MdElectricBolt, className: 'text-orange-500' },
+        { name: 'Postman APIs', icon: SiPostman, className: 'text-orange-500' },
+        { name: 'Thunder Client APIs', icon: MdElectricBolt, className: 'text-orange-500' },
         { name: 'Firebase', icon: SiFirebase, className: 'text-yellow-400' },
       ],
     },

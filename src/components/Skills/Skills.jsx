@@ -76,9 +76,9 @@ const Skills = () => {
     {
       title: 'Database',
       items: [
-        { name: 'MongoDB ORM', icon: SiMongodb, className: 'text-green-400' },
+        { name: 'MongoDB', icon: SiMongodb, className: 'text-green-400' },
         { name: 'MySQL Workbanch', icon: SiMysql, className: 'text-blue-300' },
-        { name: 'Prisma ORM', icon: SiPrisma, className: 'text-indigo-400' },
+        { name: 'Prisma', icon: SiPrisma, className: 'text-indigo-400' },
       ],
     },
     // {
@@ -108,7 +108,7 @@ const Skills = () => {
         { name: 'Render', icon: SiRender, className: 'text-purple-300' },
         { name: 'Vercel', icon: SiVercel, className: 'text-white' },
         { name: 'Netlify', icon: SiNetlify, className: 'text-green-300' },
-        { name: 'Firebase', icon: SiFirebase, className: 'text-yellow-400' },
+        
       ],
     },
   ];

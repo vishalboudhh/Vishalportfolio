@@ -7,7 +7,7 @@ const Contact = () => {
   const contacts = [
     {
       type: 'Email',
-      value: 'vishalmeshram2111@gmail.com',
+      value: 'vishalmeshram298@gmail.com',
       icon: <MdEmail size={24} className="text-red-400" />,
       link: 'mailto:vishalmeshram2111@gmail.com',
     },

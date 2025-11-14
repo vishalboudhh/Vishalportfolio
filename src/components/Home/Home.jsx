@@ -7,7 +7,7 @@ import profileImg from "../../assets/profile.jpg";
 const Home = () => {
   const handleDownloadCV = () => {
     window.open(
-      "https://drive.google.com/file/d/1Lz9MKL10GIfTx4cu_1a4iApM22WftebR/view?usp=sharing",
+      "https://drive.google.com/file/d/1CfqhpZ18VzEL8mTWO1sTM7eYU7XRX959/view?usp=sharing",
       "_blank"
     );
   };

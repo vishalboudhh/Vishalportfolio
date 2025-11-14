@@ -1,10 +1,19 @@
 import React from 'react';
+import { BiUserCheck } from 'react-icons/bi';
 import { FaGithub, FaUserMd, FaTasks } from 'react-icons/fa';
 import { IoChatbubblesSharp } from 'react-icons/io5';
 import { MdOutlineEmail, MdLibraryBooks } from 'react-icons/md';
 import { RiTodoLine } from 'react-icons/ri';
 
 const projects = [
+  {
+    title: 'Job Portal',
+    link: 'https://vishaljobportal.onrender.com/',
+    icon: <BiUserCheck className="text-violet-500" size={28} />,
+    image: 'https://cdn-icons-png.flaticon.com/512/9423/9423983.png',
+    description:
+      'Full-stack MERN job portal with role-based authentication, real-time job search/filtering, application tracking, and admin dashboard for managing companies and applicants.',
+  },
   {
     title: 'Chat Application',
     link: 'https://fullstackchatapp-s8ce.onrender.com/login',

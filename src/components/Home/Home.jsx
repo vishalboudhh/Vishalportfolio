@@ -59,7 +59,7 @@ const Home = () => {
             </li>
             <li>
               <a
-                href='https://www.geeksforgeeks.org/user/vishalmesj08n/'
+                href='https://www.geeksforgeeks.org/user/vishalmeshram298/'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='text-green-400 hover:text-green-600 transition'

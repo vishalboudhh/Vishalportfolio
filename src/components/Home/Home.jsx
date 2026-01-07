@@ -67,16 +67,7 @@ const Home = () => {
                 <SiGeeksforgeeks className="text-3xl" />
               </a>
             </li>
-            <li>
-              <a
-                href='https://x.com/Vishalboudhh'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='text-white hover:text-gray-400 transition'
-              >
-                <FaXTwitter />
-              </a>
-            </li>
+          
           </ul>
         </div>
 

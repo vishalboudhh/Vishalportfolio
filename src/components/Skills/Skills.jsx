@@ -81,16 +81,7 @@ const Skills = () => {
         { name: 'Prisma', icon: SiPrisma, className: 'text-indigo-400' },
       ],
     },
-    // {
-    //   title: 'DevOps',
-    //   items: [
-    //     { name: 'Docker', icon: SiDocker, className: 'text-blue-400' },
-    //     { name: 'Kubernetes', icon: SiKubernetes, className: 'text-blue-500' },
-    //     { name: 'GitHub Actions', icon: SiGithubactions, className: 'text-gray-200' },
-    //     { name: 'AWS', icon: FaAws, className: 'text-orange-400' },
-    //   ],
-    // },
-
+    
     {
       title: 'Tools',
       items: [

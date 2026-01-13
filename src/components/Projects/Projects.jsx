@@ -2,7 +2,7 @@ import React from 'react';
 import { BiUserCheck } from 'react-icons/bi';
 import { FaGithub, FaUserMd, FaTasks } from 'react-icons/fa';
 import { IoChatbubblesSharp } from 'react-icons/io5';
-import { MdOutlineEmail, MdLibraryBooks } from 'react-icons/md';
+import { MdOutlineEmail, MdLibraryBooks, MdOutlineAccountTree } from 'react-icons/md';
 import { RiTodoLine } from 'react-icons/ri';
 
 const projects = [
@@ -13,6 +13,14 @@ const projects = [
     image: 'https://cdn-icons-png.flaticon.com/512/9423/9423983.png',
     description:
       'Full-stack MERN job portal with role-based authentication, real-time job search/filtering, application tracking, and admin dashboard for managing companies and applicants.',
+  },
+  {
+    title: 'Email Tracker',
+    link: 'https://email-tracker-one-woad.vercel.app/',
+    icon: <MdOutlineAccountTree className="text-Blue-500" size={28}   />,
+   image: "https://cdn-icons-png.flaticon.com/512/7286/7286142.png",
+    description:
+    'MERN app that helps manage and track email job applications efficiently. Include authentication, profilemanagement, automated job email sending, application tracking dashboard, secure APIs, and a responsive UI in Tailwind CSS.',
   },
   {
     title: 'Chat Application',

@@ -17,26 +17,26 @@ connectDB();
 const app = express();
 
 /* ---------- Middlewares ---------- */
-const allowedOrigins = [
-  process.env.CLIENT_URL,
-  process.env.DEV_CLIENT_URL,
-].filter(Boolean); // removes undefined
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // allow REST tools (Postman, curl)
+    origin: function (origin, callback) {
+      // allow Postman / server-to-server
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
+      if (
+        origin === process.env.CLIENT_URL ||
+        origin === process.env.DEV_CLIENT_URL
+      ) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(null, false); // IMPORTANT
       }
     },
     credentials: true,
   })
 );
+
+
 app.use(express.json());
 
 
@@ -45,8 +45,8 @@ app.use("/api/home", homeRoutes);
 app.use("/api/about", aboutRoutes);
 app.use("/api/skills", skillsRoutes);
 app.use("/api/experience", experienceRoutes);
-app.use("/api/projects",projectsRoutes);
-app.use("/api/contact",contactRoutes);
+app.use("/api/projects", projectsRoutes);
+app.use("/api/contact", contactRoutes);
 
 
 

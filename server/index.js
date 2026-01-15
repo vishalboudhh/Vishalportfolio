@@ -17,26 +17,14 @@ connectDB();
 const app = express();
 
 /* ---------- Middlewares ---------- */
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // allow Postman / server-to-server
-      if (!origin) return callback(null, true);
 
-      if (
-        origin === process.env.CLIENT_URL ||
-        origin === process.env.DEV_CLIENT_URL
-      ) {
-        callback(null, true);
-      } else {
-        callback(null, false); // IMPORTANT
-      }
-    },
-    credentials: true,
-  })
-);
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  process.env.VERCEL_PREVIEW_URL,
+  process.env.DEV_CLIENT_URL,
+];
 
-
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 

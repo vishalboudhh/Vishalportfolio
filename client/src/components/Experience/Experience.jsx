@@ -3,12 +3,28 @@ import { getExperiences } from "../../api/experience";
 
 const Experience = () => {
   const [experiences, setExperiences] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getExperiences()
       .then((res) => setExperiences(res.data.data))
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
+
+  // 🔹 Loading UI
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-black text-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-sm text-gray-400 tracking-wide">
+            Loading Experience...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-black text-white px-6 md:px-20 py-16">
@@ -20,18 +36,19 @@ const Experience = () => {
         {experiences.map((exp) => (
           <div key={exp._id} className="border-l-2 border-gray-600 pl-6">
             <h3 className="text-xl font-semibold">{exp.role}</h3>
+
             <p className="text-gray-400">
               {exp.company} •{" "}
               {new Date(exp.startDate).toLocaleDateString("en-US", {
                 month: "short",
-                year: "numeric"
+                year: "numeric",
               })}{" "}
               –{" "}
               {exp.isCurrent
                 ? "Present"
                 : new Date(exp.endDate).toLocaleDateString("en-US", {
                     month: "short",
-                    year: "numeric"
+                    year: "numeric",
                   })}
             </p>
 

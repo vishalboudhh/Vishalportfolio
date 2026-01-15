@@ -4,6 +4,7 @@ import { HiOutlineMail, HiOutlinePhone } from "react-icons/hi";
 
 const Contact = () => {
   const [contact, setContact] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getContact()
@@ -16,20 +17,40 @@ const Contact = () => {
               type: "Email",
               value: data.email,
               link: `mailto:${data.email}`,
-              icon: <HiOutlineMail size={24} className="bg-red-500"/>,
+              icon: <HiOutlineMail size={24} className="bg-red-500" />,
             },
             {
               type: "Phone",
               value: data.phone,
               link: `tel:${data.phone}`,
-              icon: <HiOutlinePhone size={24} className="bg-green-500 rounded-2xl" />,
+              icon: (
+                <HiOutlinePhone
+                  size={24}
+                  className="bg-green-500 rounded-2xl"
+                />
+              ),
             },
           ],
           socials: data.socials || [],
         });
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
+
+  // 🔹 Loading UI
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-black text-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-sm text-gray-400 tracking-wide">
+            Loading Contact...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (!contact) return null;
 

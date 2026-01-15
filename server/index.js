@@ -17,7 +17,26 @@ connectDB();
 const app = express();
 
 /* ---------- Middlewares ---------- */
-app.use(cors());
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  process.env.DEV_CLIENT_URL,
+].filter(Boolean); // removes undefined
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // allow REST tools (Postman, curl)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 

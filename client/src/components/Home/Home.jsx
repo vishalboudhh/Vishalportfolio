@@ -10,7 +10,33 @@ const Home = () => {
   useEffect(() => {
     getHome()
       .then((res) => {
-        setHome(res.data.data);
+        const data = res.data.data;
+
+        // Transform social links into an array for easier mapping
+        const socials = [
+          {
+            name: "LinkedIn",
+            link: data.linkedin,
+            icon: "https://cdn-icons-png.flaticon.com/512/174/174857.png",
+          },
+          {
+            name: "GitHub",
+            link: data.github,
+            icon: "https://cdn-icons-png.flaticon.com/512/733/733553.png",
+          },
+          {
+            name: "LeetCode",
+            link: data.leetcode,
+            icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/leetcode/leetcode-original.svg",
+          },
+          {
+            name: "GeeksforGeeks",
+            link: data.gfg,
+            icon: "https://img.icons8.com/?size=96&id=AbQBhN9v62Ob&format=png",
+          },
+        ];
+
+        setHome({ ...data, socials });
       })
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -49,7 +75,7 @@ const Home = () => {
         {/* Social Icons */}
         <div className="flex mt-6 justify-center">
           <ul className="flex gap-4 text-2xl">
-            {(home.socials || []).map((social, idx) => (
+            {home.socials.map((social, idx) => (
               <li key={idx}>
                 <a
                   href={social.link}
@@ -58,11 +84,7 @@ const Home = () => {
                   title={social.name}
                   className="hover:scale-110 transition"
                 >
-                  <img
-                    src={social.icon}
-                    alt={social.name}
-                    className="w-7 h-7"
-                  />
+                  <img src={social.icon} alt={social.name} className="w-7 h-7" />
                 </a>
               </li>
             ))}
@@ -70,19 +92,22 @@ const Home = () => {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 mt-8 justify-center">
+        <div className="flex gap-4 mt-8 justify-center flex-wrap">
           <Link to="/contact">
             <button className="cursor-pointer bg-gradient-to-r from-green-500 to-gray-900 text-white font-semibold rounded-3xl py-2 px-6 hover:opacity-90 hover:scale-105 transition">
               Hire Me
             </button>
           </Link>
 
-          <button
-            onClick={() => window.open(home.cvLink, "_blank")}
-            className="cursor-pointer bg-gradient-to-r from-blue-400 to-gray-900 text-white font-semibold rounded-3xl py-2 px-6 hover:opacity-90 hover:scale-105 transition"
+          <a
+            href={home.resumeUrl} // use the correct key from backend
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Download CV
-          </button>
+            <button className="cursor-pointer bg-gradient-to-r from-blue-400 to-gray-900 text-white font-semibold rounded-3xl py-2 px-6 hover:opacity-90 hover:scale-105 transition">
+              Download CV
+            </button>
+          </a>
         </div>
       </div>
 

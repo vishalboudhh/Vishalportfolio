@@ -18,13 +18,12 @@ const app = express();
 
 /* ---------- Middlewares ---------- */
 
-const allowedOrigins = [
-  process.env.CLIENT_URL,
-  process.env.VERCEL_PREVIEW_URL,
-  process.env.DEV_CLIENT_URL,
-];
-
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(
+  cors({
+    origin: true, // 👈 allow ALL origins dynamically
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 

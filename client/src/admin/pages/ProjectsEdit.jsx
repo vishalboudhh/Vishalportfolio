@@ -1,0 +1,190 @@
+import { useEffect, useState } from "react";
+import {
+  getProjects,
+  updateProject,
+  deleteProject,
+  reorderProjects,
+} from "../../api/projects";
+import {
+  Trash2,
+  Save,
+  ArrowUp,
+  ArrowDown,
+} from "lucide-react";
+
+const ProjectsEdit = () => {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  /* ---------- FETCH ---------- */
+  const fetchProjects = async () => {
+    try {
+      const res = await getProjects();
+      setProjects(res.data.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  /* ---------- UPDATE FIELD ---------- */
+  const updateField = (index, key, value) => {
+    const updated = [...projects];
+    updated[index] = { ...updated[index], [key]: value };
+    setProjects(updated);
+  };
+
+  /* ---------- SAVE ---------- */
+  const handleSave = async (project) => {
+    try {
+      await updateProject(project._id, project);
+      alert("Project updated successfully");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  /* ---------- DELETE ---------- */
+  const handleDelete = async (id) => {
+    if (!confirm("Delete this project?")) return;
+
+    try {
+      await deleteProject(id);
+      fetchProjects();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  /* ---------- REORDER ---------- */
+  const moveProject = async (index, direction) => {
+    const updated = [...projects];
+    const target = direction === "up" ? index - 1 : index + 1;
+
+    if (target < 0 || target >= updated.length) return;
+
+    [updated[index], updated[target]] = [
+      updated[target],
+      updated[index],
+    ];
+
+    setProjects(updated);
+
+    const orders = updated.map((p, i) => ({
+      id: p._id,
+      order: i + 1,
+    }));
+
+    try {
+      await reorderProjects(orders);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if (loading) {
+    return <p className="text-white">Loading projects...</p>;
+  }
+
+  return (
+    <div className="text-white space-y-8 max-w-6xl">
+      <h2 className="text-3xl font-bold">Edit Projects</h2>
+
+      {projects.map((p, index) => (
+        <div
+          key={p._id}
+          className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-5"
+        >
+          {/* HEADER */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <h3 className="text-lg font-semibold">
+              {p.title || "Project Title"}
+            </h3>
+
+            {/* ACTION ICONS */}
+            <div className="flex gap-4">
+              <button
+                onClick={() => moveProject(index, "up")}
+                className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
+                title="Move Up"
+              >
+                <ArrowUp size={18} />
+              </button>
+
+              <button
+                onClick={() => moveProject(index, "down")}
+                className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
+                title="Move Down"
+              >
+                <ArrowDown size={18} />
+              </button>
+
+              <button
+                onClick={() => handleDelete(p._id)}
+                className="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400"
+                title="Delete Project"
+              >
+                <Trash2 size={18} />
+              </button>
+            </div>
+          </div>
+
+          {/* FIELDS */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              value={p.title}
+              onChange={(e) => updateField(index, "title", e.target.value)}
+              placeholder="Project title"
+              className="bg-black border border-gray-700 px-3 py-2 rounded"
+            />
+
+            <input
+              value={p.image || ""}
+              onChange={(e) => updateField(index, "image", e.target.value)}
+              placeholder="Image URL"
+              className="bg-black border border-gray-700 px-3 py-2 rounded"
+            />
+
+            <input
+              value={p.liveLink || ""}
+              onChange={(e) => updateField(index, "liveLink", e.target.value)}
+              placeholder="Live demo link"
+              className="bg-black border border-gray-700 px-3 py-2 rounded"
+            />
+
+            <input
+              value={p.githubLink || ""}
+              onChange={(e) => updateField(index, "githubLink", e.target.value)}
+              placeholder="GitHub link"
+              className="bg-black border border-gray-700 px-3 py-2 rounded"
+            />
+          </div>
+
+          <textarea
+            value={p.description}
+            onChange={(e) => updateField(index, "description", e.target.value)}
+            placeholder="Project description"
+            rows={4}
+            className="w-full bg-black border border-gray-700 px-3 py-2 rounded"
+          />
+
+          {/* SAVE */}
+          <button
+            onClick={() => handleSave(p)}
+            className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-lg flex items-center justify-center gap-2"
+          >
+            <Save size={16} /> Save Changes
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+
+};
+
+export default ProjectsEdit;

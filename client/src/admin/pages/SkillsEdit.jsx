@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import {
   getSkills,
-  createSkill,
-  updateSkill,
-  deleteSkill,
+  addCategory,
+  deleteCategory,
   reorderCategories,
+  updateSkill,
+  
 } from "../../api/skills";
+
 import {
   Plus,
   Trash2,
@@ -36,13 +38,10 @@ const SkillsEdit = () => {
   }, []);
 
   /* ---------------- ADD CATEGORY ---------------- */
-  const addCategory = async () => {
+  const addNewCategory = async () => {
     if (!newCategory.trim()) return;
     try {
-      await createSkill({
-        category: newCategory.trim(),
-        skills: [],
-      });
+      await addCategory({ category: newCategory.trim() });
       setNewCategory("");
       fetchSkills();
     } catch (err) {
@@ -54,7 +53,7 @@ const SkillsEdit = () => {
   const removeCategory = async (id) => {
     if (!window.confirm("Delete this category?")) return;
     try {
-      await deleteSkill(id);
+      await deleteCategory(id);
       fetchSkills();
     } catch (err) {
       console.error(err);
@@ -86,8 +85,8 @@ const SkillsEdit = () => {
     }
   };
 
-  /* ---------------- ADD SKILL ---------------- */
-  const addSkill = (catIndex) => {
+  /* ---------------- ADD SKILL (UI ONLY) ---------------- */
+  const addSkillUI = (catIndex) => {
     const updated = [...categories];
     updated[catIndex].skills.push({
       name: "",
@@ -97,7 +96,7 @@ const SkillsEdit = () => {
     setCategories(updated);
   };
 
-  /* ---------------- REMOVE SKILL ---------------- */
+  /* ---------------- REMOVE SKILL (UI ONLY) ---------------- */
   const removeSkill = (catIndex, skillIndex) => {
     const updated = [...categories];
     updated[catIndex].skills.splice(skillIndex, 1);
@@ -112,14 +111,23 @@ const SkillsEdit = () => {
   };
 
   /* ---------------- SAVE CATEGORY ---------------- */
-  const saveCategory = async (category) => {
-    try {
-      await updateSkill(category._id, { skills: category.skills });
-      alert(`${category.category} updated`);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+const saveCategory = async (category) => {
+  try {
+    await updateSkill(category._id, {
+      skills: category.skills.map((s, i) => ({
+        ...s,
+        order: i + 1,
+      })),
+    });
+
+    alert(`${category.category} updated`);
+    fetchSkills();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
 
   if (loading) {
     return <p className="text-white">Loading skills...</p>;
@@ -129,7 +137,7 @@ const SkillsEdit = () => {
     <div className="text-white space-y-10 max-w-6xl">
       <h2 className="text-3xl font-bold">Edit Skills</h2>
 
-      {/* ADD CATEGORY (MOBILE FRIENDLY) */}
+      {/* ADD CATEGORY */}
       <div className="flex flex-col sm:flex-row gap-3">
         <input
           value={newCategory}
@@ -138,7 +146,7 @@ const SkillsEdit = () => {
           className="bg-black border border-gray-700 px-4 py-3 rounded-lg w-full"
         />
         <button
-          onClick={addCategory}
+          onClick={addNewCategory}
           className="bg-emerald-600 px-5 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-emerald-700 transition w-full sm:w-auto"
         >
           <Plus size={18} /> Add Category
@@ -155,12 +163,10 @@ const SkillsEdit = () => {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <h3 className="text-xl font-semibold">{cat.category}</h3>
 
-            {/* ACTION ICONS (SPACED & TOUCH FRIENDLY) */}
             <div className="flex gap-4">
               <button
                 onClick={() => moveCategory(catIndex, "up")}
                 className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
-                title="Move Up"
               >
                 <ArrowUp size={18} />
               </button>
@@ -168,7 +174,6 @@ const SkillsEdit = () => {
               <button
                 onClick={() => moveCategory(catIndex, "down")}
                 className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
-                title="Move Down"
               >
                 <ArrowDown size={18} />
               </button>
@@ -176,7 +181,6 @@ const SkillsEdit = () => {
               <button
                 onClick={() => removeCategory(cat._id)}
                 className="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400"
-                title="Delete Category"
               >
                 <Trash2 size={18} />
               </button>
@@ -194,12 +198,7 @@ const SkillsEdit = () => {
                   placeholder="Skill name"
                   value={skill.name}
                   onChange={(e) =>
-                    updateSkillField(
-                      catIndex,
-                      skillIndex,
-                      "name",
-                      e.target.value
-                    )
+                    updateSkillField(catIndex, skillIndex, "name", e.target.value)
                   }
                   className="w-full sm:flex-1 bg-transparent border border-gray-700 px-3 py-2 rounded"
                 />
@@ -208,12 +207,7 @@ const SkillsEdit = () => {
                   placeholder="Icon URL"
                   value={skill.icon}
                   onChange={(e) =>
-                    updateSkillField(
-                      catIndex,
-                      skillIndex,
-                      "icon",
-                      e.target.value
-                    )
+                    updateSkillField(catIndex, skillIndex, "icon", e.target.value)
                   }
                   className="w-full sm:flex-1 bg-transparent border border-gray-700 px-3 py-2 rounded"
                 />
@@ -221,7 +215,6 @@ const SkillsEdit = () => {
                 <button
                   onClick={() => removeSkill(catIndex, skillIndex)}
                   className="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400"
-                  title="Delete Skill"
                 >
                   <Trash2 size={18} />
                 </button>
@@ -232,7 +225,7 @@ const SkillsEdit = () => {
           {/* ACTIONS */}
           <div className="flex flex-col sm:flex-row gap-3 pt-3">
             <button
-              onClick={() => addSkill(catIndex)}
+              onClick={() => addSkillUI(catIndex)}
               className="bg-blue-600 px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-700 transition w-full sm:w-auto"
             >
               <Plus size={16} /> Add Skill

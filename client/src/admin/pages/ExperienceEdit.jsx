@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   getExperiences,
+  createExperience,
   updateExperience,
   deleteExperience,
   reorderExperience,
@@ -10,7 +11,17 @@ import {
   Save,
   ArrowUp,
   ArrowDown,
+  Plus,
 } from "lucide-react";
+
+const emptyExperience = {
+  role: "",
+  company: "",
+  location: "",
+  startDate: "",
+  endDate: "",
+  description: [],
+};
 
 const ExperienceEdit = () => {
   const [items, setItems] = useState([]);
@@ -31,6 +42,19 @@ const ExperienceEdit = () => {
   useEffect(() => {
     fetchExperiences();
   }, []);
+
+  /* ---------- ADD EXPERIENCE ---------- */
+  const handleAdd = async () => {
+    try {
+      await createExperience({
+        ...emptyExperience,
+        order: items.length + 1,
+      });
+      fetchExperiences();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   /* ---------- UPDATE FIELD ---------- */
   const updateField = (index, key, value) => {
@@ -93,7 +117,17 @@ const ExperienceEdit = () => {
 
   return (
     <div className="text-white space-y-8 max-w-5xl">
-      <h2 className="text-3xl font-bold">Edit Experience</h2>
+      {/* HEADER */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h2 className="text-3xl font-bold">Edit Experience</h2>
+
+        <button
+          onClick={handleAdd}
+          className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-lg flex items-center gap-2"
+        >
+          <Plus size={18} /> Add Experience
+        </button>
+      </div>
 
       {items.map((exp, index) => (
         <div
@@ -103,15 +137,13 @@ const ExperienceEdit = () => {
           {/* HEADER */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <h3 className="font-semibold text-lg">
-              {exp.role || "Role"} @ {exp.company || "Company"}
+              {exp.role || "New Role"} @ {exp.company || "Company"}
             </h3>
 
-            {/* ACTION ICONS */}
             <div className="flex gap-4">
               <button
                 onClick={() => moveItem(index, "up")}
                 className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
-                title="Move Up"
               >
                 <ArrowUp size={18} />
               </button>
@@ -119,7 +151,6 @@ const ExperienceEdit = () => {
               <button
                 onClick={() => moveItem(index, "down")}
                 className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
-                title="Move Down"
               >
                 <ArrowDown size={18} />
               </button>
@@ -127,7 +158,6 @@ const ExperienceEdit = () => {
               <button
                 onClick={() => handleDelete(exp._id)}
                 className="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400"
-                title="Delete"
               >
                 <Trash2 size={18} />
               </button>
@@ -182,7 +212,6 @@ const ExperienceEdit = () => {
             className="w-full bg-black border border-gray-700 px-3 py-2 rounded"
           />
 
-          {/* SAVE BUTTON */}
           <button
             onClick={() => handleSave(exp)}
             className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-lg flex items-center justify-center gap-2"
@@ -193,7 +222,6 @@ const ExperienceEdit = () => {
       ))}
     </div>
   );
-
 };
 
 export default ExperienceEdit;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   getProjects,
+  createProject,
   updateProject,
   deleteProject,
   reorderProjects,
@@ -10,7 +11,16 @@ import {
   Save,
   ArrowUp,
   ArrowDown,
+  Plus,
 } from "lucide-react";
+
+const emptyProject = {
+  title: "",
+  description: "",
+  image: "",
+  liveLink: "",
+  githubLink: "",
+};
 
 const ProjectsEdit = () => {
   const [projects, setProjects] = useState([]);
@@ -31,6 +41,19 @@ const ProjectsEdit = () => {
   useEffect(() => {
     fetchProjects();
   }, []);
+
+  /* ---------- ADD PROJECT ---------- */
+  const handleAdd = async () => {
+    try {
+      await createProject({
+        ...emptyProject,
+        order: projects.length + 1,
+      });
+      fetchProjects();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   /* ---------- UPDATE FIELD ---------- */
   const updateField = (index, key, value) => {
@@ -93,7 +116,17 @@ const ProjectsEdit = () => {
 
   return (
     <div className="text-white space-y-8 max-w-6xl">
-      <h2 className="text-3xl font-bold">Edit Projects</h2>
+      {/* HEADER */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h2 className="text-3xl font-bold">Edit Projects</h2>
+
+        <button
+          onClick={handleAdd}
+          className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-lg flex items-center gap-2"
+        >
+          <Plus size={18} /> Add Project
+        </button>
+      </div>
 
       {projects.map((p, index) => (
         <div
@@ -103,15 +136,13 @@ const ProjectsEdit = () => {
           {/* HEADER */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <h3 className="text-lg font-semibold">
-              {p.title || "Project Title"}
+              {p.title || "New Project"}
             </h3>
 
-            {/* ACTION ICONS */}
             <div className="flex gap-4">
               <button
                 onClick={() => moveProject(index, "up")}
                 className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
-                title="Move Up"
               >
                 <ArrowUp size={18} />
               </button>
@@ -119,7 +150,6 @@ const ProjectsEdit = () => {
               <button
                 onClick={() => moveProject(index, "down")}
                 className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
-                title="Move Down"
               >
                 <ArrowDown size={18} />
               </button>
@@ -127,7 +157,6 @@ const ProjectsEdit = () => {
               <button
                 onClick={() => handleDelete(p._id)}
                 className="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400"
-                title="Delete Project"
               >
                 <Trash2 size={18} />
               </button>
@@ -173,7 +202,6 @@ const ProjectsEdit = () => {
             className="w-full bg-black border border-gray-700 px-3 py-2 rounded"
           />
 
-          {/* SAVE */}
           <button
             onClick={() => handleSave(p)}
             className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-lg flex items-center justify-center gap-2"
@@ -184,7 +212,6 @@ const ProjectsEdit = () => {
       ))}
     </div>
   );
-
 };
 
 export default ProjectsEdit;

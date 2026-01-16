@@ -2,11 +2,14 @@ import api from "./axios";
 
 export const getSkills = () => api.get("/skills");
 
-export const createSkill = (data) => api.post("/skills", data);
+export const addCategory = (data) =>
+  api.post("/skills/category", data);
 
-export const updateSkill = (id, data) => api.put(`/skills/${id}`, data);
-
-export const deleteSkill = (id) => api.delete(`/skills/${id}`);
+export const deleteCategory = (categoryId) =>
+  api.delete(`/skills/category/${categoryId}`);
 
 export const reorderCategories = (orders) =>
   api.put("/skills/reorder/categories", { orders });
+
+export const updateSkill = (categoryId, data) =>
+  api.put(`/skills/${categoryId}/skills`, data);

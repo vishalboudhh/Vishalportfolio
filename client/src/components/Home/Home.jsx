@@ -32,7 +32,7 @@ const Home = () => {
           {
             name: "GeeksforGeeks",
             link: data.gfg,
-            icon: "https://img.icons8.com/?size=96&id=AbQBhN9v62Ob&format=png",
+            icon: "https://media.geeksforgeeks.org/gfg-gg-logo.svg",
           },
         ];
 

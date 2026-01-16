@@ -4,8 +4,7 @@ import {
   addCategory,
   deleteCategory,
   reorderCategories,
-  updateSkill,
-  
+  saveAllSkills,
 } from "../../api/skills";
 
 import {
@@ -25,7 +24,7 @@ const SkillsEdit = () => {
   const fetchSkills = async () => {
     try {
       const res = await getSkills();
-      setCategories(res.data.data);
+      setCategories(res.data.data || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -110,24 +109,27 @@ const SkillsEdit = () => {
     setCategories(updated);
   };
 
-  /* ---------------- SAVE CATEGORY ---------------- */
-const saveCategory = async (category) => {
-  try {
-    await updateSkill(category._id, {
-      skills: category.skills.map((s, i) => ({
-        ...s,
+  /* ---------------- SAVE ALL SKILLS ---------------- */
+  const saveSkills = async () => {
+    try {
+      const payload = categories.map((cat, i) => ({
+        category: cat.category,
         order: i + 1,
-      })),
-    });
+        skills: cat.skills.map((s, j) => ({
+          name: s.name,
+          icon: s.icon,
+          order: j + 1,
+        })),
+      }));
 
-    alert(`${category.category} updated`);
-    fetchSkills();
-  } catch (err) {
-    console.error(err);
-  }
-};
+      await saveAllSkills(payload);
 
-
+      alert("Skills updated successfully");
+      fetchSkills();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   if (loading) {
     return <p className="text-white">Loading skills...</p>;
@@ -232,7 +234,7 @@ const saveCategory = async (category) => {
             </button>
 
             <button
-              onClick={() => saveCategory(cat)}
+              onClick={saveSkills}
               className="bg-emerald-600 px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-emerald-700 transition w-full sm:w-auto"
             >
               <Save size={16} /> Save

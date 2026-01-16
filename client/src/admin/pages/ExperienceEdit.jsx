@@ -6,6 +6,7 @@ import {
   deleteExperience,
   reorderExperience,
 } from "../../api/experience";
+
 import {
   Trash2,
   Save,
@@ -14,6 +15,7 @@ import {
   Plus,
 } from "lucide-react";
 
+/* ❌ DO NOT USE FOR CREATE (backend rejects empty fields) */
 const emptyExperience = {
   role: "",
   company: "",
@@ -31,7 +33,7 @@ const ExperienceEdit = () => {
   const fetchExperiences = async () => {
     try {
       const res = await getExperiences();
-      setItems(res.data.data);
+      setItems(res.data.data || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -43,13 +45,21 @@ const ExperienceEdit = () => {
     fetchExperiences();
   }, []);
 
-  /* ---------- ADD EXPERIENCE ---------- */
+  /* ---------- ADD EXPERIENCE (FIXED, UI SAME) ---------- */
   const handleAdd = async () => {
     try {
       await createExperience({
-        ...emptyExperience,
+        company: "New Company",
+        role: "New Role",
+        location: "",
+        startDate: new Date().toISOString(),
+        endDate: null,
+        isCurrent: true,
+        description: ["Add description"],
+        techStack: [],
         order: items.length + 1,
       });
+
       fetchExperiences();
     } catch (err) {
       console.error(err);
@@ -66,8 +76,13 @@ const ExperienceEdit = () => {
   /* ---------- SAVE ---------- */
   const handleSave = async (exp) => {
     try {
-      await updateExperience(exp._id, exp);
+      await updateExperience(exp._id, {
+        ...exp,
+        description: exp.description?.filter(Boolean),
+      });
+
       alert("Experience updated");
+      fetchExperiences();
     } catch (err) {
       console.error(err);
     }
@@ -182,7 +197,9 @@ const ExperienceEdit = () => {
 
             <input
               value={exp.location || ""}
-              onChange={(e) => updateField(index, "location", e.target.value)}
+              onChange={(e) =>
+                updateField(index, "location", e.target.value)
+              }
               placeholder="Location"
               className="bg-black border border-gray-700 px-3 py-2 rounded"
             />
@@ -190,14 +207,18 @@ const ExperienceEdit = () => {
             <input
               type="date"
               value={exp.startDate?.slice(0, 10)}
-              onChange={(e) => updateField(index, "startDate", e.target.value)}
+              onChange={(e) =>
+                updateField(index, "startDate", e.target.value)
+              }
               className="bg-black border border-gray-700 px-3 py-2 rounded"
             />
 
             <input
               type="date"
-              value={exp.endDate?.slice(0, 10)}
-              onChange={(e) => updateField(index, "endDate", e.target.value)}
+              value={exp.endDate?.slice(0, 10) || ""}
+              onChange={(e) =>
+                updateField(index, "endDate", e.target.value)
+              }
               className="bg-black border border-gray-700 px-3 py-2 rounded"
             />
           </div>

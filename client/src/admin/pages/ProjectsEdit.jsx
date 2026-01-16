@@ -6,6 +6,7 @@ import {
   deleteProject,
   reorderProjects,
 } from "../../api/projects";
+
 import {
   Trash2,
   Save,
@@ -14,6 +15,7 @@ import {
   Plus,
 } from "lucide-react";
 
+/* ❌ DO NOT USE FOR CREATE (backend rejects empty fields) */
 const emptyProject = {
   title: "",
   description: "",
@@ -30,7 +32,7 @@ const ProjectsEdit = () => {
   const fetchProjects = async () => {
     try {
       const res = await getProjects();
-      setProjects(res.data.data);
+      setProjects(res.data.data || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -42,13 +44,20 @@ const ProjectsEdit = () => {
     fetchProjects();
   }, []);
 
-  /* ---------- ADD PROJECT ---------- */
+  /* ---------- ADD PROJECT (FIXED) ---------- */
   const handleAdd = async () => {
     try {
       await createProject({
-        ...emptyProject,
+        title: "New Project",
+        description: "Project description",
+        image: "https://via.placeholder.com/600x400",
+        techStack: [],
+        liveLink: "",
+        githubLink: "",
+        featured: false,
         order: projects.length + 1,
       });
+
       fetchProjects();
     } catch (err) {
       console.error(err);
@@ -67,6 +76,7 @@ const ProjectsEdit = () => {
     try {
       await updateProject(project._id, project);
       alert("Project updated successfully");
+      fetchProjects();
     } catch (err) {
       console.error(err);
     }

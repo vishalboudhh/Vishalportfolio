@@ -316,3 +316,47 @@ export const reorderSkillItems = async (req, res) => {
     });
   }
 };
+
+
+/* ---------- UPDATE SKILLS IN CATEGORY (Admin) ---------- */
+export const updateCategorySkills = async (req, res) => {
+  try {
+    const { categoryId } = req.params;
+    const { skills } = req.body;
+
+    if (!categoryId || !Array.isArray(skills)) {
+      return res.status(400).json({
+        success: false,
+        message: "Category ID and skills array are required"
+      });
+    }
+
+    const category = await Skill.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found"
+      });
+    }
+
+    category.skills = skills.map((s, i) => ({
+      name: s.name.trim(),
+      icon: s.icon.trim(),
+      order: i + 1
+    }));
+
+    await category.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Skills updated successfully",
+      data: category
+    });
+  } catch (error) {
+    console.error("Update Skills Error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update skills"
+    });
+  }
+};

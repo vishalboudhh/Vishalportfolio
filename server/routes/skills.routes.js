@@ -7,8 +7,10 @@ import {
   deleteSkillItem,
   bulkUpsertSkills,
   reorderCategories,
-  reorderSkillItems
+  reorderSkillItems,
+  updateCategorySkills
 } from "../controllers/skills.controller.js";
+
 import authMiddleware from "../middleware/auth.middleware.js";
 
 
@@ -29,5 +31,9 @@ router.delete("/item", authMiddleware, deleteSkillItem);
 router.put("/bulk", authMiddleware, bulkUpsertSkills);
 router.put("/reorder/categories", authMiddleware, reorderCategories);
 router.put("/reorder/items", authMiddleware, reorderSkillItems);
+
+
+
+router.put("/:categoryId/skills", authMiddleware, updateCategorySkills);
 
 export default router;

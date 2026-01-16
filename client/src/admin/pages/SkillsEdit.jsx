@@ -123,7 +123,6 @@ const SkillsEdit = () => {
       }));
 
       await saveAllSkills(payload);
-
       alert("Skills updated successfully");
       fetchSkills();
     } catch (err) {
@@ -131,10 +130,53 @@ const SkillsEdit = () => {
     }
   };
 
+  /* ---------------- SKELETON LOADER ---------------- */
   if (loading) {
-    return <p className="text-white">Loading skills...</p>;
+    return (
+      <div className="text-white space-y-10 max-w-6xl animate-pulse">
+        <div className="h-8 w-48 bg-white/10 rounded" />
+
+        <div className="flex gap-3">
+          <div className="h-12 bg-white/10 rounded-lg flex-1" />
+          <div className="h-12 w-40 bg-white/10 rounded-lg" />
+        </div>
+
+        {[1, 2].map((_, i) => (
+          <div
+            key={i}
+            className="border border-white/10 rounded-xl p-5 space-y-5 bg-white/5"
+          >
+            <div className="flex justify-between">
+              <div className="h-6 w-40 bg-white/10 rounded" />
+              <div className="flex gap-3">
+                <div className="h-10 w-10 bg-white/10 rounded-lg" />
+                <div className="h-10 w-10 bg-white/10 rounded-lg" />
+                <div className="h-10 w-10 bg-white/10 rounded-lg" />
+              </div>
+            </div>
+
+            {[1, 2, 3].map((__, j) => (
+              <div
+                key={j}
+                className="flex gap-3 bg-black/60 p-3 rounded-lg"
+              >
+                <div className="h-10 bg-white/10 rounded flex-1" />
+                <div className="h-10 bg-white/10 rounded flex-1" />
+                <div className="h-10 w-10 bg-white/10 rounded-lg" />
+              </div>
+            ))}
+
+            <div className="flex gap-3 pt-3">
+              <div className="h-12 w-32 bg-white/10 rounded-lg" />
+              <div className="h-12 w-32 bg-white/10 rounded-lg" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
+  /* ---------------- MAIN UI ---------------- */
   return (
     <div className="text-white space-y-10 max-w-6xl">
       <h2 className="text-3xl font-bold">Edit Skills</h2>
@@ -149,93 +191,75 @@ const SkillsEdit = () => {
         />
         <button
           onClick={addNewCategory}
-          className="bg-emerald-600 px-5 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-emerald-700 transition w-full sm:w-auto"
+          className="bg-emerald-600 px-5 py-3 rounded-lg flex items-center gap-2 hover:bg-emerald-700"
         >
           <Plus size={18} /> Add Category
         </button>
       </div>
 
-      {/* CATEGORIES */}
       {categories.map((cat, catIndex) => (
         <div
           key={cat._id}
           className="border border-white/10 rounded-xl p-5 space-y-5 bg-white/5"
         >
-          {/* CATEGORY HEADER */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex justify-between items-center">
             <h3 className="text-xl font-semibold">{cat.category}</h3>
-
-            <div className="flex gap-4">
-              <button
-                onClick={() => moveCategory(catIndex, "up")}
-                className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
-              >
+            <div className="flex gap-3">
+              <button onClick={() => moveCategory(catIndex, "up")} className="p-2 bg-gray-800 rounded">
                 <ArrowUp size={18} />
               </button>
-
-              <button
-                onClick={() => moveCategory(catIndex, "down")}
-                className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
-              >
+              <button onClick={() => moveCategory(catIndex, "down")} className="p-2 bg-gray-800 rounded">
                 <ArrowDown size={18} />
               </button>
-
               <button
                 onClick={() => removeCategory(cat._id)}
-                className="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400"
+                className="p-2 bg-red-600/20 text-red-400 rounded"
               >
                 <Trash2 size={18} />
               </button>
             </div>
           </div>
 
-          {/* SKILLS */}
-          <div className="space-y-3">
-            {cat.skills.map((skill, skillIndex) => (
-              <div
-                key={skillIndex}
-                className="flex flex-col sm:flex-row gap-3 items-center bg-black/60 p-3 rounded-lg"
+          {cat.skills.map((skill, skillIndex) => (
+            <div
+              key={skillIndex}
+              className="flex gap-3 bg-black/60 p-3 rounded-lg"
+            >
+              <input
+                value={skill.name}
+                onChange={(e) =>
+                  updateSkillField(catIndex, skillIndex, "name", e.target.value)
+                }
+                placeholder="Skill name"
+                className="flex-1 bg-transparent border border-gray-700 px-3 py-2 rounded"
+              />
+              <input
+                value={skill.icon}
+                onChange={(e) =>
+                  updateSkillField(catIndex, skillIndex, "icon", e.target.value)
+                }
+                placeholder="Icon URL"
+                className="flex-1 bg-transparent border border-gray-700 px-3 py-2 rounded"
+              />
+              <button
+                onClick={() => removeSkill(catIndex, skillIndex)}
+                className="p-2 bg-red-600/20 text-red-400 rounded"
               >
-                <input
-                  placeholder="Skill name"
-                  value={skill.name}
-                  onChange={(e) =>
-                    updateSkillField(catIndex, skillIndex, "name", e.target.value)
-                  }
-                  className="w-full sm:flex-1 bg-transparent border border-gray-700 px-3 py-2 rounded"
-                />
+                <Trash2 size={18} />
+              </button>
+            </div>
+          ))}
 
-                <input
-                  placeholder="Icon URL"
-                  value={skill.icon}
-                  onChange={(e) =>
-                    updateSkillField(catIndex, skillIndex, "icon", e.target.value)
-                  }
-                  className="w-full sm:flex-1 bg-transparent border border-gray-700 px-3 py-2 rounded"
-                />
-
-                <button
-                  onClick={() => removeSkill(catIndex, skillIndex)}
-                  className="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400"
-                >
-                  <Trash2 size={18} />
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {/* ACTIONS */}
-          <div className="flex flex-col sm:flex-row gap-3 pt-3">
+          <div className="flex gap-3 pt-3">
             <button
               onClick={() => addSkillUI(catIndex)}
-              className="bg-blue-600 px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-700 transition w-full sm:w-auto"
+              className="bg-blue-600 px-4 py-3 rounded-lg flex items-center gap-2"
             >
               <Plus size={16} /> Add Skill
             </button>
-
             <button
               onClick={saveSkills}
-              className="bg-emerald-600 px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-emerald-700 transition w-full sm:w-auto"
+              className="bg-emerald-600 px-4 py-3 rounded-lg flex items-center gap-2"
             >
               <Save size={16} /> Save
             </button>

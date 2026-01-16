@@ -7,12 +7,13 @@ const ContactEdit = () => {
   const [phone, setPhone] = useState("");
   const [socials, setSocials] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   /* ---------- FETCH ---------- */
   useEffect(() => {
     getContact()
       .then((res) => {
-        const data = res.data.data;
+        const data = res.data.data || {};
         setEmail(data.email || "");
         setPhone(data.phone || "");
         setSocials(data.socials || []);
@@ -23,10 +24,7 @@ const ContactEdit = () => {
 
   /* ---------- ADD SOCIAL ---------- */
   const addSocial = () => {
-    setSocials([
-      ...socials,
-      { name: "", icon: "", link: "" },
-    ]);
+    setSocials([...socials, { name: "", icon: "", link: "" }]);
   };
 
   /* ---------- UPDATE SOCIAL ---------- */
@@ -38,27 +36,28 @@ const ContactEdit = () => {
 
   /* ---------- REMOVE SOCIAL ---------- */
   const removeSocial = (index) => {
-    const updated = socials.filter((_, i) => i !== index);
-    setSocials(updated);
+    setSocials(socials.filter((_, i) => i !== index));
   };
 
   /* ---------- SAVE ---------- */
   const handleSave = async () => {
     try {
-      await updateContact({
-        email,
-        phone,
-        socials,
-      });
+      setSaving(true);
+      await updateContact({ email, phone, socials });
       alert("Contact updated successfully");
     } catch (err) {
       console.error(err);
+    } finally {
+      setSaving(false);
     }
   };
 
-  if (loading) {
-    return <p className="text-white">Loading contact...</p>;
-  }
+  /* ---------- SKELETON ---------- */
+  const Skeleton = ({ className }) => (
+    <div
+      className={`animate-pulse bg-white/10 rounded ${className}`}
+    />
+  );
 
   return (
     <div className="text-white space-y-8 max-w-4xl">
@@ -66,19 +65,28 @@ const ContactEdit = () => {
 
       {/* EMAIL & PHONE */}
       <div className="grid md:grid-cols-2 gap-4">
-        <input
-          className="bg-black border border-gray-700 px-4 py-2 rounded-lg"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email address"
-        />
+        {loading ? (
+          <>
+            <Skeleton className="h-11" />
+            <Skeleton className="h-11" />
+          </>
+        ) : (
+          <>
+            <input
+              className="bg-black border border-gray-700 px-4 py-2 rounded-lg"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email address"
+            />
 
-        <input
-          className="bg-black border border-gray-700 px-4 py-2 rounded-lg"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="Phone number"
-        />
+            <input
+              className="bg-black border border-gray-700 px-4 py-2 rounded-lg"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Phone number"
+            />
+          </>
+        )}
       </div>
 
       {/* SOCIAL LINKS */}
@@ -88,60 +96,83 @@ const ContactEdit = () => {
 
           <button
             onClick={addSocial}
-            className="bg-blue-600 px-4 py-2 rounded-lg flex items-center gap-2"
+            disabled={loading}
+            className="bg-blue-600 disabled:opacity-50 px-4 py-2 rounded-lg flex items-center gap-2"
           >
             <Plus size={16} /> Add Social
           </button>
         </div>
 
-        {socials.map((social, index) => (
-          <div
-            key={index}
-            className="grid md:grid-cols-4 gap-3 bg-white/5 p-4 rounded-xl"
-          >
-            <input
-              placeholder="Name (LinkedIn)"
-              value={social.name}
-              onChange={(e) =>
-                updateSocial(index, "name", e.target.value)
-              }
-              className="bg-black border border-gray-700 px-3 py-2 rounded"
-            />
-
-            <input
-              placeholder="Icon URL"
-              value={social.icon}
-              onChange={(e) =>
-                updateSocial(index, "icon", e.target.value)
-              }
-              className="bg-black border border-gray-700 px-3 py-2 rounded"
-            />
-
-            <input
-              placeholder="Profile link"
-              value={social.link}
-              onChange={(e) =>
-                updateSocial(index, "link", e.target.value)
-              }
-              className="bg-black border border-gray-700 px-3 py-2 rounded col-span-1 md:col-span-1"
-            />
-
-            <button
-              onClick={() => removeSocial(index)}
-              className="flex justify-center items-center text-red-400 hover:text-red-600"
+        {loading ? (
+          <>
+            {[1, 2].map((i) => (
+              <div
+                key={i}
+                className="grid md:grid-cols-4 gap-3 bg-white/5 p-4 rounded-xl"
+              >
+                <Skeleton className="h-10" />
+                <Skeleton className="h-10" />
+                <Skeleton className="h-10" />
+                <Skeleton className="h-10" />
+              </div>
+            ))}
+          </>
+        ) : socials.length === 0 ? (
+          <p className="text-gray-400 text-sm">
+            No social links added yet.
+          </p>
+        ) : (
+          socials.map((social, index) => (
+            <div
+              key={index}
+              className="grid md:grid-cols-4 gap-3 bg-white/5 p-4 rounded-xl"
             >
-              <Trash2 size={18} />
-            </button>
-          </div>
-        ))}
+              <input
+                placeholder="Name (LinkedIn)"
+                value={social.name}
+                onChange={(e) =>
+                  updateSocial(index, "name", e.target.value)
+                }
+                className="bg-black border border-gray-700 px-3 py-2 rounded"
+              />
+
+              <input
+                placeholder="Icon URL"
+                value={social.icon}
+                onChange={(e) =>
+                  updateSocial(index, "icon", e.target.value)
+                }
+                className="bg-black border border-gray-700 px-3 py-2 rounded"
+              />
+
+              <input
+                placeholder="Profile link"
+                value={social.link}
+                onChange={(e) =>
+                  updateSocial(index, "link", e.target.value)
+                }
+                className="bg-black border border-gray-700 px-3 py-2 rounded"
+              />
+
+              <button
+                onClick={() => removeSocial(index)}
+                className="flex justify-center items-center text-red-400 hover:text-red-600"
+              >
+                <Trash2 size={18} />
+              </button>
+            </div>
+          ))
+        )}
       </div>
 
       {/* SAVE BUTTON */}
       <button
         onClick={handleSave}
-        className="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-lg flex items-center gap-2"
+        disabled={loading || saving}
+        className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 px-6 py-3 rounded-lg flex items-center gap-2"
       >
-        <Save size={18} /> Save Changes
+        <Save size={18} />
+        {saving ? "Saving..." : "Save Changes"}
       </button>
     </div>
   );

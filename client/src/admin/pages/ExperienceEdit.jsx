@@ -15,16 +15,6 @@ import {
   Plus,
 } from "lucide-react";
 
-/* ❌ DO NOT USE FOR CREATE (backend rejects empty fields) */
-const emptyExperience = {
-  role: "",
-  company: "",
-  location: "",
-  startDate: "",
-  endDate: "",
-  description: [],
-};
-
 const ExperienceEdit = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +35,7 @@ const ExperienceEdit = () => {
     fetchExperiences();
   }, []);
 
-  /* ---------- ADD EXPERIENCE (FIXED, UI SAME) ---------- */
+  /* ---------- ADD EXPERIENCE ---------- */
   const handleAdd = async () => {
     try {
       await createExperience({
@@ -126,10 +116,53 @@ const ExperienceEdit = () => {
     }
   };
 
+  /* ---------- SKELETON LOADER ---------- */
   if (loading) {
-    return <p className="text-white">Loading experience...</p>;
+    return (
+      <div className="text-white space-y-8 max-w-5xl animate-pulse">
+        {/* HEADER */}
+        <div className="flex justify-between items-center">
+          <div className="h-8 w-56 bg-white/10 rounded" />
+          <div className="h-12 w-44 bg-white/10 rounded-lg" />
+        </div>
+
+        {[1, 2].map((_, i) => (
+          <div
+            key={i}
+            className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-5"
+          >
+            {/* CARD HEADER */}
+            <div className="flex justify-between">
+              <div className="h-6 w-64 bg-white/10 rounded" />
+              <div className="flex gap-3">
+                <div className="h-10 w-10 bg-white/10 rounded-lg" />
+                <div className="h-10 w-10 bg-white/10 rounded-lg" />
+                <div className="h-10 w-10 bg-white/10 rounded-lg" />
+              </div>
+            </div>
+
+            {/* INPUT GRID */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[1, 2, 3, 4, 5].map((__, j) => (
+                <div
+                  key={j}
+                  className="h-10 bg-white/10 rounded"
+                />
+              ))}
+            </div>
+
+            {/* TEXTAREA */}
+            <div className="h-24 bg-white/10 rounded" />
+
+            {/* SAVE BUTTON */}
+            <div className="h-12 w-40 bg-white/10 rounded-lg" />
+          </div>
+        ))}
+      </div>
+    );
   }
 
+  /* ---------- MAIN UI ---------- */
   return (
     <div className="text-white space-y-8 max-w-5xl">
       {/* HEADER */}
@@ -149,37 +182,27 @@ const ExperienceEdit = () => {
           key={exp._id}
           className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-5"
         >
-          {/* HEADER */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex justify-between items-center">
             <h3 className="font-semibold text-lg">
               {exp.role || "New Role"} @ {exp.company || "Company"}
             </h3>
 
-            <div className="flex gap-4">
-              <button
-                onClick={() => moveItem(index, "up")}
-                className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
-              >
+            <div className="flex gap-3">
+              <button onClick={() => moveItem(index, "up")} className="p-2 bg-gray-800 rounded">
                 <ArrowUp size={18} />
               </button>
-
-              <button
-                onClick={() => moveItem(index, "down")}
-                className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700"
-              >
+              <button onClick={() => moveItem(index, "down")} className="p-2 bg-gray-800 rounded">
                 <ArrowDown size={18} />
               </button>
-
               <button
                 onClick={() => handleDelete(exp._id)}
-                className="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400"
+                className="p-2 bg-red-600/20 text-red-400 rounded"
               >
                 <Trash2 size={18} />
               </button>
             </div>
           </div>
 
-          {/* FIELDS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               value={exp.role}
@@ -187,38 +210,28 @@ const ExperienceEdit = () => {
               placeholder="Role"
               className="bg-black border border-gray-700 px-3 py-2 rounded"
             />
-
             <input
               value={exp.company}
               onChange={(e) => updateField(index, "company", e.target.value)}
               placeholder="Company"
               className="bg-black border border-gray-700 px-3 py-2 rounded"
             />
-
             <input
               value={exp.location || ""}
-              onChange={(e) =>
-                updateField(index, "location", e.target.value)
-              }
+              onChange={(e) => updateField(index, "location", e.target.value)}
               placeholder="Location"
               className="bg-black border border-gray-700 px-3 py-2 rounded"
             />
-
             <input
               type="date"
               value={exp.startDate?.slice(0, 10)}
-              onChange={(e) =>
-                updateField(index, "startDate", e.target.value)
-              }
+              onChange={(e) => updateField(index, "startDate", e.target.value)}
               className="bg-black border border-gray-700 px-3 py-2 rounded"
             />
-
             <input
               type="date"
               value={exp.endDate?.slice(0, 10) || ""}
-              onChange={(e) =>
-                updateField(index, "endDate", e.target.value)
-              }
+              onChange={(e) => updateField(index, "endDate", e.target.value)}
               className="bg-black border border-gray-700 px-3 py-2 rounded"
             />
           </div>
@@ -228,14 +241,13 @@ const ExperienceEdit = () => {
             onChange={(e) =>
               updateField(index, "description", e.target.value.split("\n"))
             }
-            placeholder="Description (one point per line)"
             rows={4}
             className="w-full bg-black border border-gray-700 px-3 py-2 rounded"
           />
 
           <button
             onClick={() => handleSave(exp)}
-            className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-lg flex items-center justify-center gap-2"
+            className="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-lg flex items-center gap-2"
           >
             <Save size={16} /> Save Changes
           </button>

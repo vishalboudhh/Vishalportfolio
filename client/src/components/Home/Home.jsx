@@ -12,7 +12,6 @@ const Home = () => {
       .then((res) => {
         const data = res.data.data;
 
-        // Transform social links into an array for easier mapping
         const socials = [
           {
             name: "LinkedIn",
@@ -42,22 +41,9 @@ const Home = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  // 🔹 Loading UI
-  if (loading) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-black text-white">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-sm tracking-wide text-gray-400">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!home) return null;
-
   return (
     <div className="bg-black h-[595px] overflow-hidden text-white flex flex-col-reverse md:flex-row justify-between items-center px-6 md:px-20 py-22 md:py-0 gap-6">
+      
       {/* Text Section */}
       <div className="w-full md:w-1/2 text-center">
         <h1 className="text-3xl md:text-6xl font-bold leading-tight">
@@ -75,19 +61,25 @@ const Home = () => {
         {/* Social Icons */}
         <div className="flex mt-6 justify-center">
           <ul className="flex gap-4 text-2xl">
-            {home.socials.map((social, idx) => (
-              <li key={idx}>
-                <a
-                  href={social.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={social.name}
-                  className="hover:scale-110 transition"
-                >
-                  <img src={social.icon} alt={social.name} className="w-7 h-7" />
-                </a>
-              </li>
-            ))}
+            {loading
+              ? Array.from({ length: 4 }).map((_, idx) => (
+                  <li key={idx}>
+                    <div className="w-7 h-7 rounded bg-gray-700 animate-pulse" />
+                  </li>
+                ))
+              : home?.socials.map((social, idx) => (
+                  <li key={idx}>
+                    <a
+                      href={social.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={social.name}
+                      className="hover:scale-110 transition"
+                    >
+                      <img src={social.icon} alt={social.name} className="w-7 h-7" />
+                    </a>
+                  </li>
+                ))}
           </ul>
         </div>
 
@@ -99,15 +91,22 @@ const Home = () => {
             </button>
           </Link>
 
-          <a
-            href={home.resumeUrl} // use the correct key from backend
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            disabled={loading}
+            className={`cursor-pointer bg-gradient-to-r from-blue-400 to-gray-900 text-white font-semibold rounded-3xl py-2 px-6 transition
+              ${loading ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 hover:scale-105"}
+            `}
           >
-            <button className="cursor-pointer bg-gradient-to-r from-blue-400 to-gray-900 text-white font-semibold rounded-3xl py-2 px-6 hover:opacity-90 hover:scale-105 transition">
-              Download CV
-            </button>
-          </a>
+            {loading ? "Loading CV..." : (
+              <a
+                href={home?.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Download CV
+              </a>
+            )}
+          </button>
         </div>
       </div>
 

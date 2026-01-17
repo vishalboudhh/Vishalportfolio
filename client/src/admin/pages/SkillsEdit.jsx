@@ -7,13 +7,7 @@ import {
   saveAllSkills,
 } from "../../api/skills";
 
-import {
-  Plus,
-  Trash2,
-  Save,
-  ArrowUp,
-  ArrowDown,
-} from "lucide-react";
+import { Plus, Trash2, Save, ArrowUp, ArrowDown } from "lucide-react";
 
 const SkillsEdit = () => {
   const [categories, setCategories] = useState([]);
@@ -95,7 +89,7 @@ const SkillsEdit = () => {
     setCategories(updated);
   };
 
-  /* ---------------- REMOVE SKILL (UI ONLY) ---------------- */
+  /* ---------------- REMOVE SKILL ---------------- */
   const removeSkill = (catIndex, skillIndex) => {
     const updated = [...categories];
     updated[catIndex].skills.splice(skillIndex, 1);
@@ -133,12 +127,12 @@ const SkillsEdit = () => {
   /* ---------------- SKELETON LOADER ---------------- */
   if (loading) {
     return (
-      <div className="text-white space-y-10 max-w-6xl animate-pulse">
+      <div className="text-white space-y-10 max-w-6xl animate-pulse px-2 sm:px-0">
         <div className="h-8 w-48 bg-white/10 rounded" />
 
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <div className="h-12 bg-white/10 rounded-lg flex-1" />
-          <div className="h-12 w-40 bg-white/10 rounded-lg" />
+          <div className="h-12 sm:w-40 bg-white/10 rounded-lg" />
         </div>
 
         {[1, 2].map((_, i) => (
@@ -146,9 +140,9 @@ const SkillsEdit = () => {
             key={i}
             className="border border-white/10 rounded-xl p-5 space-y-5 bg-white/5"
           >
-            <div className="flex justify-between">
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
               <div className="h-6 w-40 bg-white/10 rounded" />
-              <div className="flex gap-3">
+              <div className="flex gap-3 flex-wrap">
                 <div className="h-10 w-10 bg-white/10 rounded-lg" />
                 <div className="h-10 w-10 bg-white/10 rounded-lg" />
                 <div className="h-10 w-10 bg-white/10 rounded-lg" />
@@ -158,18 +152,13 @@ const SkillsEdit = () => {
             {[1, 2, 3].map((__, j) => (
               <div
                 key={j}
-                className="flex gap-3 bg-black/60 p-3 rounded-lg"
+                className="flex flex-col sm:flex-row gap-3 bg-black/60 p-3 rounded-lg"
               >
-                <div className="h-10 bg-white/10 rounded flex-1" />
-                <div className="h-10 bg-white/10 rounded flex-1" />
-                <div className="h-10 w-10 bg-white/10 rounded-lg" />
+                <div className="h-10 bg-white/10 rounded w-full" />
+                <div className="h-10 bg-white/10 rounded w-full" />
+                <div className="h-10 w-10 bg-white/10 rounded-lg self-end sm:self-auto" />
               </div>
             ))}
-
-            <div className="flex gap-3 pt-3">
-              <div className="h-12 w-32 bg-white/10 rounded-lg" />
-              <div className="h-12 w-32 bg-white/10 rounded-lg" />
-            </div>
           </div>
         ))}
       </div>
@@ -178,7 +167,7 @@ const SkillsEdit = () => {
 
   /* ---------------- MAIN UI ---------------- */
   return (
-    <div className="text-white space-y-10 max-w-6xl">
+    <div className="text-white space-y-10 max-w-6xl px-2 sm:px-0">
       <h2 className="text-3xl font-bold">Edit Skills</h2>
 
       {/* ADD CATEGORY */}
@@ -191,7 +180,7 @@ const SkillsEdit = () => {
         />
         <button
           onClick={addNewCategory}
-          className="bg-emerald-600 px-5 py-3 rounded-lg flex items-center gap-2 hover:bg-emerald-700"
+          className="bg-emerald-600 px-5 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-emerald-700"
         >
           <Plus size={18} /> Add Category
         </button>
@@ -202,13 +191,20 @@ const SkillsEdit = () => {
           key={cat._id}
           className="border border-white/10 rounded-xl p-5 space-y-5 bg-white/5"
         >
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <h3 className="text-xl font-semibold">{cat.category}</h3>
-            <div className="flex gap-3">
-              <button onClick={() => moveCategory(catIndex, "up")} className="p-2 bg-gray-800 rounded">
+
+            <div className="flex gap-3 flex-wrap">
+              <button
+                onClick={() => moveCategory(catIndex, "up")}
+                className="p-2 bg-gray-800 rounded"
+              >
                 <ArrowUp size={18} />
               </button>
-              <button onClick={() => moveCategory(catIndex, "down")} className="p-2 bg-gray-800 rounded">
+              <button
+                onClick={() => moveCategory(catIndex, "down")}
+                className="p-2 bg-gray-800 rounded"
+              >
                 <ArrowDown size={18} />
               </button>
               <button
@@ -223,43 +219,53 @@ const SkillsEdit = () => {
           {cat.skills.map((skill, skillIndex) => (
             <div
               key={skillIndex}
-              className="flex gap-3 bg-black/60 p-3 rounded-lg"
+              className="flex flex-col sm:flex-row gap-3 bg-black/60 p-3 rounded-lg"
             >
               <input
                 value={skill.name}
                 onChange={(e) =>
-                  updateSkillField(catIndex, skillIndex, "name", e.target.value)
+                  updateSkillField(
+                    catIndex,
+                    skillIndex,
+                    "name",
+                    e.target.value
+                  )
                 }
                 placeholder="Skill name"
-                className="flex-1 bg-transparent border border-gray-700 px-3 py-2 rounded"
+                className="w-full sm:flex-1 bg-transparent border border-gray-700 px-3 py-2 rounded"
               />
               <input
                 value={skill.icon}
                 onChange={(e) =>
-                  updateSkillField(catIndex, skillIndex, "icon", e.target.value)
+                  updateSkillField(
+                    catIndex,
+                    skillIndex,
+                    "icon",
+                    e.target.value
+                  )
                 }
                 placeholder="Icon URL"
-                className="flex-1 bg-transparent border border-gray-700 px-3 py-2 rounded"
+                className="w-full sm:flex-1 bg-transparent border border-gray-700 px-3 py-2 rounded"
               />
               <button
                 onClick={() => removeSkill(catIndex, skillIndex)}
-                className="p-2 bg-red-600/20 text-red-400 rounded"
+                className="p-2 bg-red-600/20 text-red-400 rounded self-end sm:self-auto"
               >
                 <Trash2 size={18} />
               </button>
             </div>
           ))}
 
-          <div className="flex gap-3 pt-3">
+          <div className="flex flex-col sm:flex-row gap-3 pt-3">
             <button
               onClick={() => addSkillUI(catIndex)}
-              className="bg-blue-600 px-4 py-3 rounded-lg flex items-center gap-2"
+              className="bg-blue-600 px-4 py-3 rounded-lg flex items-center justify-center gap-2"
             >
               <Plus size={16} /> Add Skill
             </button>
             <button
               onClick={saveSkills}
-              className="bg-emerald-600 px-4 py-3 rounded-lg flex items-center gap-2"
+              className="bg-emerald-600 px-4 py-3 rounded-lg flex items-center justify-center gap-2"
             >
               <Save size={16} /> Save
             </button>

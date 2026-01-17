@@ -40,7 +40,7 @@ const Sidebar = () => {
     <>
       {/* MOBILE HAMBURGER (LEFT) */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 text-white"
+        className="flex justify-center md:hidden fixed top-4 left-4 z-50 w-[15%] rounded-2xl bg-emerald-500 text-white"
         onClick={() => setOpen(true)}
       >
         <RiMenu2Line size={28} />

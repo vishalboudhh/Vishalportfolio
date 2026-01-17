@@ -32,14 +32,41 @@ function App() {
     <Router>
       {/* 🔥 TOASTER MUST BE RENDERED */}
       <Toaster
-        position="top-right"
-        toastOptions={{
-          style: {
-            background: "#111",
-            color: "#fff",
-          },
-        }}
-      />
+  position="top-right"
+  toastOptions={{
+    duration: 3500,
+    style: {
+      background: "linear-gradient(135deg, #0f172a, #020617)",
+      color: "#e5e7eb",
+      border: "1px solid rgba(255,255,255,0.08)",
+      borderRadius: "12px",
+      padding: "14px 18px",
+      fontSize: "14px",
+      fontWeight: 500,
+      boxShadow:
+        "0 10px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)",
+    },
+    success: {
+      iconTheme: {
+        primary: "#22c55e",
+        secondary: "#020617",
+      },
+    },
+    error: {
+      iconTheme: {
+        primary: "#ef4444",
+        secondary: "#020617",
+      },
+    },
+    loading: {
+      iconTheme: {
+        primary: "#38bdf8",
+        secondary: "#020617",
+      },
+    },
+  }}
+/>
+
 
       <Navbar />
 

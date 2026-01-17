@@ -68,6 +68,7 @@ const SkillsEdit = () => {
   const moveCategory = async (index, direction) => {
     const updated = [...categories];
     const targetIndex = direction === "up" ? index - 1 : index + 1;
+
     if (targetIndex < 0 || targetIndex >= updated.length) return;
 
     [updated[index], updated[targetIndex]] = [
@@ -91,45 +92,61 @@ const SkillsEdit = () => {
     }
   };
 
-  /* ---------------- ADD SKILL (UI ONLY) ---------------- */
+  /* ---------------- ADD SKILL (FIXED) ---------------- */
   const addSkillUI = (catIndex) => {
-    setCategories((prev) => {
-      const updated = [...prev];
+    setCategories((prev) =>
+      prev.map((cat, index) => {
+        if (index !== catIndex) return cat;
 
-      if (!updated[catIndex].skills) {
-        updated[catIndex].skills = [];
-      }
+        const skills = cat.skills || [];
 
-      updated[catIndex].skills.push({
-        name: "",
-        icon: "",
-        order: updated[catIndex].skills.length + 1,
-      });
-
-      return updated;
-    });
+        return {
+          ...cat,
+          skills: [
+            ...skills,
+            {
+              name: "",
+              icon: "",
+              order: skills.length + 1,
+            },
+          ],
+        };
+      })
+    );
 
     toast.success("Skill added (not saved yet)");
   };
 
-  /* ---------------- REMOVE SKILL ---------------- */
+  /* ---------------- REMOVE SKILL (FIXED) ---------------- */
   const removeSkill = (catIndex, skillIndex) => {
-    setCategories((prev) => {
-      const updated = [...prev];
-      updated[catIndex].skills.splice(skillIndex, 1);
-      return updated;
-    });
+    setCategories((prev) =>
+      prev.map((cat, index) => {
+        if (index !== catIndex) return cat;
+
+        return {
+          ...cat,
+          skills: cat.skills.filter((_, i) => i !== skillIndex),
+        };
+      })
+    );
 
     toast.success("Skill removed (not saved yet)");
   };
 
   /* ---------------- UPDATE SKILL FIELD ---------------- */
   const updateSkillField = (catIndex, skillIndex, key, value) => {
-    setCategories((prev) => {
-      const updated = [...prev];
-      updated[catIndex].skills[skillIndex][key] = value;
-      return updated;
-    });
+    setCategories((prev) =>
+      prev.map((cat, index) => {
+        if (index !== catIndex) return cat;
+
+        return {
+          ...cat,
+          skills: cat.skills.map((skill, i) =>
+            i === skillIndex ? { ...skill, [key]: value } : skill
+          ),
+        };
+      })
+    );
   };
 
   /* ---------------- SAVE ALL SKILLS ---------------- */
@@ -154,7 +171,7 @@ const SkillsEdit = () => {
     }
   };
 
-  /* ---------------- LOADING STATE ---------------- */
+  /* ---------------- LOADING ---------------- */
   if (loading) {
     return <p className="text-white">Loading skills...</p>;
   }
@@ -174,7 +191,7 @@ const SkillsEdit = () => {
         />
         <button
           onClick={addNewCategory}
-          className="bg-emerald-600 px-5 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-emerald-700"
+          className="bg-emerald-600 px-5 py-3 rounded-lg flex items-center gap-2 hover:bg-emerald-700"
         >
           <Plus size={18} /> Add Category
         </button>
@@ -186,10 +203,10 @@ const SkillsEdit = () => {
           className="border border-white/10 rounded-xl p-5 space-y-5 bg-white/5"
         >
           {/* CATEGORY HEADER */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <div className="flex justify-between items-center">
             <h3 className="text-xl font-semibold">{cat.category}</h3>
 
-            <div className="flex gap-3 flex-wrap">
+            <div className="flex gap-3">
               <button
                 onClick={() => moveCategory(catIndex, "up")}
                 className="p-2 bg-gray-800 rounded"
@@ -245,7 +262,7 @@ const SkillsEdit = () => {
               />
               <button
                 onClick={() => removeSkill(catIndex, skillIndex)}
-                className="p-2 bg-red-600/20 text-red-400 rounded"
+                className="p-2 text-red-400"
               >
                 <Trash2 size={18} />
               </button>
@@ -256,13 +273,13 @@ const SkillsEdit = () => {
           <div className="flex flex-col sm:flex-row gap-3 pt-3">
             <button
               onClick={() => addSkillUI(catIndex)}
-              className="bg-blue-600 px-4 py-3 rounded-lg flex items-center justify-center gap-2"
+              className="bg-blue-600 px-4 py-3 rounded-lg flex items-center gap-2"
             >
               <Plus size={16} /> Add Skill
             </button>
             <button
               onClick={saveSkills}
-              className="bg-emerald-600 px-4 py-3 rounded-lg flex items-center justify-center gap-2"
+              className="bg-emerald-600 px-4 py-3 rounded-lg flex items-center gap-2"
             >
               <Save size={16} /> Save
             </button>

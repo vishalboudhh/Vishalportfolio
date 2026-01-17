@@ -15,6 +15,8 @@ import {
   Plus,
 } from "lucide-react";
 
+import toast from "react-hot-toast";
+
 const ExperienceEdit = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +28,7 @@ const ExperienceEdit = () => {
       setItems(res.data.data || []);
     } catch (err) {
       console.error(err);
+      toast.error("Failed to load experience");
     } finally {
       setLoading(false);
     }
@@ -50,9 +53,11 @@ const ExperienceEdit = () => {
         order: items.length + 1,
       });
 
+      toast.success("Experience added");
       fetchExperiences();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to add experience");
     }
   };
 
@@ -71,22 +76,25 @@ const ExperienceEdit = () => {
         description: exp.description?.filter(Boolean),
       });
 
-      alert("Experience updated");
+      toast.success("Experience updated");
       fetchExperiences();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to update experience");
     }
   };
 
   /* ---------- DELETE ---------- */
   const handleDelete = async (id) => {
-    if (!confirm("Delete this experience?")) return;
+    if (!window.confirm("Delete this experience?")) return;
 
     try {
       await deleteExperience(id);
+      toast.success("Experience deleted");
       fetchExperiences();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to delete experience");
     }
   };
 
@@ -111,61 +119,28 @@ const ExperienceEdit = () => {
 
     try {
       await reorderExperience(orders);
+      toast.success("Order updated");
     } catch (err) {
       console.error(err);
+      toast.error("Failed to reorder");
     }
   };
 
-  /* ---------- SKELETON LOADER ---------- */
+  /* ---------- SKELETON ---------- */
   if (loading) {
     return (
       <div className="text-white space-y-8 max-w-5xl animate-pulse">
-        {/* HEADER */}
         <div className="flex justify-between items-center">
           <div className="h-8 w-56 bg-white/10 rounded" />
           <div className="h-12 w-44 bg-white/10 rounded-lg" />
         </div>
-
-        {[1, 2].map((_, i) => (
-          <div
-            key={i}
-            className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-5"
-          >
-            {/* CARD HEADER */}
-            <div className="flex justify-between">
-              <div className="h-6 w-64 bg-white/10 rounded" />
-              <div className="flex gap-3">
-                <div className="h-10 w-10 bg-white/10 rounded-lg" />
-                <div className="h-10 w-10 bg-white/10 rounded-lg" />
-                <div className="h-10 w-10 bg-white/10 rounded-lg" />
-              </div>
-            </div>
-
-            {/* INPUT GRID */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[1, 2, 3, 4, 5].map((__, j) => (
-                <div
-                  key={j}
-                  className="h-10 bg-white/10 rounded"
-                />
-              ))}
-            </div>
-
-            {/* TEXTAREA */}
-            <div className="h-24 bg-white/10 rounded" />
-
-            {/* SAVE BUTTON */}
-            <div className="h-12 w-40 bg-white/10 rounded-lg" />
-          </div>
-        ))}
       </div>
     );
   }
 
-  /* ---------- MAIN UI ---------- */
+  /* ---------- UI ---------- */
   return (
     <div className="text-white space-y-8 max-w-5xl">
-      {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h2 className="text-3xl font-bold">Edit Experience</h2>
 
@@ -188,10 +163,16 @@ const ExperienceEdit = () => {
             </h3>
 
             <div className="flex gap-3">
-              <button onClick={() => moveItem(index, "up")} className="p-2 bg-gray-800 rounded">
+              <button
+                onClick={() => moveItem(index, "up")}
+                className="p-2 bg-gray-800 rounded"
+              >
                 <ArrowUp size={18} />
               </button>
-              <button onClick={() => moveItem(index, "down")} className="p-2 bg-gray-800 rounded">
+              <button
+                onClick={() => moveItem(index, "down")}
+                className="p-2 bg-gray-800 rounded"
+              >
                 <ArrowDown size={18} />
               </button>
               <button

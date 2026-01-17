@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAbout, updateAbout } from "../../api/about";
 import { Plus, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const AboutEdit = () => {
   const [content, setContent] = useState("");
@@ -14,7 +15,10 @@ const AboutEdit = () => {
         setContent(data.content || "");
         setHighlights(data.highlights || []);
       })
-      .catch(console.error)
+      .catch((err) => {
+        console.error(err);
+        toast.error("Failed to load About section");
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -33,14 +37,19 @@ const AboutEdit = () => {
   };
 
   const handleSave = async () => {
-    await updateAbout({ content, highlights });
-    alert("About updated successfully");
+    try {
+      await updateAbout({ content, highlights });
+      toast.success("About updated successfully");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update About section");
+    }
   };
 
   return (
     <div className="max-w-5xl mx-auto text-white space-y-8">
 
-      {/* Title (Always Visible) */}
+      {/* Title */}
       <h2 className="text-3xl font-bold">Edit About Section</h2>
 
       {/* ABOUT CONTENT */}
@@ -80,7 +89,7 @@ const AboutEdit = () => {
           </button>
         </div>
 
-        {/* Skeleton Keywords */}
+        {/* Skeleton */}
         {loading ? (
           <div className="space-y-3 animate-pulse">
             {Array.from({ length: 2 }).map((_, i) => (

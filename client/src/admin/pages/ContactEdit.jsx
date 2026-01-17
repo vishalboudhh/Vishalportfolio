@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getContact, updateContact } from "../../api/contact";
 import { Plus, Trash2, Save } from "lucide-react";
+import toast from "react-hot-toast";
 
 const ContactEdit = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +19,10 @@ const ContactEdit = () => {
         setPhone(data.phone || "");
         setSocials(data.socials || []);
       })
-      .catch(console.error)
+      .catch((err) => {
+        console.error(err);
+        toast.error("Failed to load contact details");
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -37,6 +41,7 @@ const ContactEdit = () => {
   /* ---------- REMOVE SOCIAL ---------- */
   const removeSocial = (index) => {
     setSocials(socials.filter((_, i) => i !== index));
+    toast.success("Social link removed");
   };
 
   /* ---------- SAVE ---------- */
@@ -44,9 +49,10 @@ const ContactEdit = () => {
     try {
       setSaving(true);
       await updateContact({ email, phone, socials });
-      alert("Contact updated successfully");
+      toast.success("Contact updated successfully");
     } catch (err) {
       console.error(err);
+      toast.error("Failed to update contact");
     } finally {
       setSaving(false);
     }

@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import { Toaster } from "react-hot-toast";
 
 /* ---------------- SHARED ---------------- */
 import Navbar from "./components/Navbar/Navbar";
@@ -29,9 +30,19 @@ const ContactEdit = lazy(() => import("./admin/pages/ContactEdit"));
 function App() {
   return (
     <Router>
+      {/* 🔥 TOASTER MUST BE RENDERED */}
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: "#111",
+            color: "#fff",
+          },
+        }}
+      />
+
       <Navbar />
 
-      {/* Suspense wraps ONLY Routes */}
       <Suspense fallback={<div className="text-white p-5">Loading...</div>}>
         <Routes>
           {/* PUBLIC */}

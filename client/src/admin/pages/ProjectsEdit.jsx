@@ -15,6 +15,8 @@ import {
   Plus,
 } from "lucide-react";
 
+import toast from "react-hot-toast";
+
 const ProjectsEdit = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +28,7 @@ const ProjectsEdit = () => {
       setProjects(res.data.data || []);
     } catch (err) {
       console.error(err);
+      toast.error("Failed to load projects");
     } finally {
       setLoading(false);
     }
@@ -49,9 +52,11 @@ const ProjectsEdit = () => {
         order: projects.length + 1,
       });
 
+      toast.success("Project added");
       fetchProjects();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to add project");
     }
   };
 
@@ -66,22 +71,25 @@ const ProjectsEdit = () => {
   const handleSave = async (project) => {
     try {
       await updateProject(project._id, project);
-      alert("Project updated successfully");
+      toast.success("Project updated successfully");
       fetchProjects();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to update project");
     }
   };
 
   /* ---------- DELETE ---------- */
   const handleDelete = async (id) => {
-    if (!confirm("Delete this project?")) return;
+    if (!window.confirm("Delete this project?")) return;
 
     try {
       await deleteProject(id);
+      toast.success("Project deleted");
       fetchProjects();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to delete project");
     }
   };
 
@@ -106,61 +114,28 @@ const ProjectsEdit = () => {
 
     try {
       await reorderProjects(orders);
+      toast.success("Project order updated");
     } catch (err) {
       console.error(err);
+      toast.error("Failed to reorder projects");
     }
   };
 
-  /* ---------- SKELETON LOADER ---------- */
+  /* ---------- SKELETON ---------- */
   if (loading) {
     return (
       <div className="text-white space-y-8 max-w-6xl animate-pulse">
-        {/* HEADER */}
         <div className="flex justify-between items-center">
           <div className="h-8 w-56 bg-white/10 rounded" />
           <div className="h-12 w-44 bg-white/10 rounded-lg" />
         </div>
-
-        {[1, 2].map((_, i) => (
-          <div
-            key={i}
-            className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-5"
-          >
-            {/* CARD HEADER */}
-            <div className="flex justify-between">
-              <div className="h-6 w-64 bg-white/10 rounded" />
-              <div className="flex gap-3">
-                <div className="h-10 w-10 bg-white/10 rounded-lg" />
-                <div className="h-10 w-10 bg-white/10 rounded-lg" />
-                <div className="h-10 w-10 bg-white/10 rounded-lg" />
-              </div>
-            </div>
-
-            {/* INPUT GRID */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[1, 2, 3, 4].map((__, j) => (
-                <div
-                  key={j}
-                  className="h-10 bg-white/10 rounded"
-                />
-              ))}
-            </div>
-
-            {/* TEXTAREA */}
-            <div className="h-24 bg-white/10 rounded" />
-
-            {/* SAVE BUTTON */}
-            <div className="h-12 w-40 bg-white/10 rounded-lg" />
-          </div>
-        ))}
       </div>
     );
   }
 
-  /* ---------- MAIN UI ---------- */
+  /* ---------- UI ---------- */
   return (
     <div className="text-white space-y-8 max-w-6xl">
-      {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h2 className="text-3xl font-bold">Edit Projects</h2>
 

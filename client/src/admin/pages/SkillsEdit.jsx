@@ -8,6 +8,7 @@ import {
 } from "../../api/skills";
 
 import { Plus, Trash2, Save, ArrowUp, ArrowDown } from "lucide-react";
+import toast from "react-hot-toast";
 
 const SkillsEdit = () => {
   const [categories, setCategories] = useState([]);
@@ -21,6 +22,7 @@ const SkillsEdit = () => {
       setCategories(res.data.data || []);
     } catch (err) {
       console.error(err);
+      toast.error("Failed to load skills");
     } finally {
       setLoading(false);
     }
@@ -32,24 +34,33 @@ const SkillsEdit = () => {
 
   /* ---------------- ADD CATEGORY ---------------- */
   const addNewCategory = async () => {
-    if (!newCategory.trim()) return;
+    if (!newCategory.trim()) {
+      toast.error("Category name cannot be empty");
+      return;
+    }
+
     try {
       await addCategory({ category: newCategory.trim() });
       setNewCategory("");
+      toast.success("Category added");
       fetchSkills();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to add category");
     }
   };
 
   /* ---------------- DELETE CATEGORY ---------------- */
   const removeCategory = async (id) => {
     if (!window.confirm("Delete this category?")) return;
+
     try {
       await deleteCategory(id);
+      toast.success("Category deleted");
       fetchSkills();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to delete category");
     }
   };
 
@@ -73,34 +84,52 @@ const SkillsEdit = () => {
 
     try {
       await reorderCategories(orders);
+      toast.success("Category reordered");
     } catch (err) {
       console.error(err);
+      toast.error("Failed to reorder categories");
     }
   };
 
   /* ---------------- ADD SKILL (UI ONLY) ---------------- */
   const addSkillUI = (catIndex) => {
-    const updated = [...categories];
-    updated[catIndex].skills.push({
-      name: "",
-      icon: "",
-      order: updated[catIndex].skills.length + 1,
+    setCategories((prev) => {
+      const updated = [...prev];
+
+      if (!updated[catIndex].skills) {
+        updated[catIndex].skills = [];
+      }
+
+      updated[catIndex].skills.push({
+        name: "",
+        icon: "",
+        order: updated[catIndex].skills.length + 1,
+      });
+
+      return updated;
     });
-    setCategories(updated);
+
+    toast.success("Skill added (not saved yet)");
   };
 
   /* ---------------- REMOVE SKILL ---------------- */
   const removeSkill = (catIndex, skillIndex) => {
-    const updated = [...categories];
-    updated[catIndex].skills.splice(skillIndex, 1);
-    setCategories(updated);
+    setCategories((prev) => {
+      const updated = [...prev];
+      updated[catIndex].skills.splice(skillIndex, 1);
+      return updated;
+    });
+
+    toast.success("Skill removed (not saved yet)");
   };
 
   /* ---------------- UPDATE SKILL FIELD ---------------- */
   const updateSkillField = (catIndex, skillIndex, key, value) => {
-    const updated = [...categories];
-    updated[catIndex].skills[skillIndex][key] = value;
-    setCategories(updated);
+    setCategories((prev) => {
+      const updated = [...prev];
+      updated[catIndex].skills[skillIndex][key] = value;
+      return updated;
+    });
   };
 
   /* ---------------- SAVE ALL SKILLS ---------------- */
@@ -109,7 +138,7 @@ const SkillsEdit = () => {
       const payload = categories.map((cat, i) => ({
         category: cat.category,
         order: i + 1,
-        skills: cat.skills.map((s, j) => ({
+        skills: (cat.skills || []).map((s, j) => ({
           name: s.name,
           icon: s.icon,
           order: j + 1,
@@ -117,55 +146,20 @@ const SkillsEdit = () => {
       }));
 
       await saveAllSkills(payload);
-      alert("Skills updated successfully");
+      toast.success("Skills updated successfully");
       fetchSkills();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to save skills");
     }
   };
 
-  /* ---------------- SKELETON LOADER ---------------- */
+  /* ---------------- LOADING STATE ---------------- */
   if (loading) {
-    return (
-      <div className="text-white space-y-10 max-w-6xl animate-pulse px-2 sm:px-0">
-        <div className="h-8 w-48 bg-white/10 rounded" />
-
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="h-12 bg-white/10 rounded-lg flex-1" />
-          <div className="h-12 sm:w-40 bg-white/10 rounded-lg" />
-        </div>
-
-        {[1, 2].map((_, i) => (
-          <div
-            key={i}
-            className="border border-white/10 rounded-xl p-5 space-y-5 bg-white/5"
-          >
-            <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
-              <div className="h-6 w-40 bg-white/10 rounded" />
-              <div className="flex gap-3 flex-wrap">
-                <div className="h-10 w-10 bg-white/10 rounded-lg" />
-                <div className="h-10 w-10 bg-white/10 rounded-lg" />
-                <div className="h-10 w-10 bg-white/10 rounded-lg" />
-              </div>
-            </div>
-
-            {[1, 2, 3].map((__, j) => (
-              <div
-                key={j}
-                className="flex flex-col sm:flex-row gap-3 bg-black/60 p-3 rounded-lg"
-              >
-                <div className="h-10 bg-white/10 rounded w-full" />
-                <div className="h-10 bg-white/10 rounded w-full" />
-                <div className="h-10 w-10 bg-white/10 rounded-lg self-end sm:self-auto" />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    );
+    return <p className="text-white">Loading skills...</p>;
   }
 
-  /* ---------------- MAIN UI ---------------- */
+  /* ---------------- UI ---------------- */
   return (
     <div className="text-white space-y-10 max-w-6xl px-2 sm:px-0">
       <h2 className="text-3xl font-bold">Edit Skills</h2>
@@ -191,6 +185,7 @@ const SkillsEdit = () => {
           key={cat._id}
           className="border border-white/10 rounded-xl p-5 space-y-5 bg-white/5"
         >
+          {/* CATEGORY HEADER */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <h3 className="text-xl font-semibold">{cat.category}</h3>
 
@@ -216,7 +211,8 @@ const SkillsEdit = () => {
             </div>
           </div>
 
-          {cat.skills.map((skill, skillIndex) => (
+          {/* SKILLS */}
+          {(cat.skills || []).map((skill, skillIndex) => (
             <div
               key={skillIndex}
               className="flex flex-col sm:flex-row gap-3 bg-black/60 p-3 rounded-lg"
@@ -249,13 +245,14 @@ const SkillsEdit = () => {
               />
               <button
                 onClick={() => removeSkill(catIndex, skillIndex)}
-                className="p-2 bg-red-600/20 text-red-400 rounded self-end sm:self-auto"
+                className="p-2 bg-red-600/20 text-red-400 rounded"
               >
                 <Trash2 size={18} />
               </button>
             </div>
           ))}
 
+          {/* ACTIONS */}
           <div className="flex flex-col sm:flex-row gap-3 pt-3">
             <button
               onClick={() => addSkillUI(catIndex)}

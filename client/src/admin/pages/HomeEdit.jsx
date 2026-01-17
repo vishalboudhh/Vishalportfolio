@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getHome, updateHome } from "../../api/home";
 import { FaLinkedin, FaGithub, FaFilePdf } from "react-icons/fa";
 import { SiLeetcode, SiGeeksforgeeks } from "react-icons/si";
+import toast from "react-hot-toast";
 
 const HomeEdit = () => {
   const [data, setData] = useState(null);
@@ -20,7 +21,7 @@ const HomeEdit = () => {
 
   const save = async () => {
     await updateHome(data);
-    alert("Home updated successfully");
+    toast.success('Home Links updated successfully')
   };
 
   const fields = [

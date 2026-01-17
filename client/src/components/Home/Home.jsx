@@ -76,7 +76,7 @@ const Home = () => {
                       title={social.name}
                       className="hover:scale-110 transition"
                     >
-                      <img src={social.icon} alt={social.name} className="w-7 h-7" />
+                      <img src={social.icon} alt={social.name} className="w-7 h-7" loading="lazy"/>
                     </a>
                   </li>
                 ))}

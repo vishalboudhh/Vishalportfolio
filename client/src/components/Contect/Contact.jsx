@@ -93,6 +93,7 @@ const Contact = () => {
                     src={social.icon}
                     alt={social.name}
                     className="w-8 h-8"
+                    loading="lazy"
                   />
                 </a>
               ))}

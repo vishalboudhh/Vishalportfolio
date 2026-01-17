@@ -1,60 +1,69 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-//public route
-import Home from './components/Home/Home';
-import Navbar from './components/Navbar/Navbar';
-import About from './components/About/About';
-import Projects from './components/Projects/Projects';
-import Skills from './components/Skills/Skills';
-import Experience from './components/Experience/Experience';
-import Contact from './components/Contect/Contact';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
 
-//Admins
-import Login from './admin/Login';
-import PrivateRoute from './admin/PrivateRoute';
-import DashboardLayout from './admin/DashboardLayout';
-import DashboardHome from './admin/DashboardHome';
+/* ---------------- SHARED ---------------- */
+import Navbar from "./components/Navbar/Navbar";
+import PrivateRoute from "./admin/PrivateRoute";
+import DashboardLayout from "./admin/DashboardLayout";
 
-//Admin pages
-import HomeEdit from './admin/pages/HomeEdit';
-import AboutEdit from './admin/pages/AboutEdit';
-import SkillsEdit from './admin/pages/SkillsEdit';
-import ExperienceEdit from './admin/pages/ExperienceEdit';
-import ProjectsEdit from './admin/pages/ProjectsEdit';
-import ContactEdit from './admin/pages/ContactEdit';
+/* ---------------- PUBLIC PAGES (LAZY) ---------------- */
+const Home = lazy(() => import("./components/Home/Home"));
+const About = lazy(() => import("./components/About/About"));
+const Skills = lazy(() => import("./components/Skills/Skills"));
+const Experience = lazy(() => import("./components/Experience/Experience"));
+const Projects = lazy(() => import("./components/Projects/Projects"));
+const Contact = lazy(() => import("./components/Contect/Contact"));
 
+/* ---------------- ADMIN ---------------- */
+const Login = lazy(() => import("./admin/Login"));
+const DashboardHome = lazy(() => import("./admin/DashboardHome"));
+
+/* ---------------- ADMIN EDIT PAGES ---------------- */
+const HomeEdit = lazy(() => import("./admin/pages/HomeEdit"));
+const AboutEdit = lazy(() => import("./admin/pages/AboutEdit"));
+const SkillsEdit = lazy(() => import("./admin/pages/SkillsEdit"));
+const ExperienceEdit = lazy(() => import("./admin/pages/ExperienceEdit"));
+const ProjectsEdit = lazy(() => import("./admin/pages/ProjectsEdit"));
+const ContactEdit = lazy(() => import("./admin/pages/ContactEdit"));
 
 function App() {
   return (
     <Router>
-
       <Navbar />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/skills' element={<Skills />} />
-        <Route path='/experience' element={<Experience />} />
-        <Route path='/projects' element={<Projects />} />
-        <Route path='/contact' element={<Contact />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <DashboardLayout />
-            </PrivateRoute>
-          }
-        >
-          <Route index element={<DashboardHome />} />
-          <Route path="home" element={<HomeEdit />} />
-          <Route path="about" element={<AboutEdit />} />
-          <Route path="skills" element={<SkillsEdit />} />
-          <Route path="experience" element={<ExperienceEdit />} />
-          <Route path="projects" element={<ProjectsEdit />} />
-          <Route path="contact" element={<ContactEdit />} />
-        </Route>
+      {/* Suspense wraps ONLY Routes */}
+      <Suspense fallback={<div className="text-white p-5">Loading...</div>}>
+        <Routes>
+          {/* PUBLIC */}
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/skills" element={<Skills />} />
+          <Route path="/experience" element={<Experience />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/contact" element={<Contact />} />
 
-      </Routes>
+          {/* AUTH */}
+          <Route path="/login" element={<Login />} />
+
+          {/* DASHBOARD */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <DashboardLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route index element={<DashboardHome />} />
+            <Route path="home" element={<HomeEdit />} />
+            <Route path="about" element={<AboutEdit />} />
+            <Route path="skills" element={<SkillsEdit />} />
+            <Route path="experience" element={<ExperienceEdit />} />
+            <Route path="projects" element={<ProjectsEdit />} />
+            <Route path="contact" element={<ContactEdit />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

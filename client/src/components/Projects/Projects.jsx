@@ -53,6 +53,7 @@ const Projects = () => {
                     src={project.image}
                     alt={project.title}
                     className="w-16 h-16 rounded-xl object-contain bg-white/10 p-2"
+                    loading="lazy"
                   />
                 </div>
 

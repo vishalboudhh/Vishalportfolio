@@ -57,6 +57,7 @@ const Skills = () => {
                         src={skill.icon}
                         alt={skill.name}
                         className="w-7 h-7 object-contain"
+                        loading="lazy"
                       />
                       <span className="text-sm md:text-base">
                         {skill.name}
